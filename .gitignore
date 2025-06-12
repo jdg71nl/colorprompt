@@ -1,4 +1,5 @@
 #= .gitignore
 distro.info
+bin/neofetch
 #-eof
 
