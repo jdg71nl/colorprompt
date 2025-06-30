@@ -106,13 +106,20 @@ read -p "# All seems to be fine. Are you happy with the CLIENT_NAME='$CLIENT_NAM
 [ "$ANSWER" == "n" ] && exit 0
 
 
+# determine platform:
+case "$(uname -s)" in
+  Darwin)                         PLAT='MacOS' ;;
+  Linux)                          PLAT='Linux' ;;
+  CYGWIN*|MINGW32*|MSYS*|MINGW*)  PLAT='Windows' ;;
+  *)                              PLAT='Unknown' ;;
+esac
+echo "# detected platform '${PLAT}' "
+# usage: if [ "${PLAT}" == "Linux" ]; then echo "# detected Linux" ; fi
+
+
 # general settings:
 CONF_DIR="/etc/smartback"
 CLIENT_CONF="$CONF_DIR/client.sh"
-
-
-
-
 
 f_check_install_packages() {
   for PKG in $@ ; do
@@ -123,7 +130,7 @@ f_check_install_packages() {
   done
 }
 #
-f_check_install_packages sudo rsync apt-show-versions lshw raspinfo neofetch
+[ "$PLAT" == "Linux" ] && f_check_install_packages sudo rsync apt-show-versions lshw raspinfo neofetch
 
 # DONT ===>   [ -f "$CONF_TEMPL_SH" ] && source "$CONF_TEMPL_SH"
 
@@ -146,10 +153,18 @@ cp -av $CONF_TEMPL_DIR/* $CONF_DIR/
 
 echo "# now updating Parameters in CONF_FILE=$CONF_FILE  ..."
 #
-sed -i "" "s,^RSYNC_TARGET.*\$,RSYNC_TARGET=\"$RSYNC_TARGET\"," "$CONF_FILE"
-sed -i "" "s,^RSYNC_PORT.*\$,RSYNC_PORT=\"$RSYNC_PORT\"," "$CONF_FILE"
-sed -i "" "s,^RSYNC_USER.*\$,RSYNC_USER=\"$RSYNC_USER\"," "$CONF_FILE"
-sed -i "" "s,^SCRIPT_DIR.*\$,SCRIPT_DIR=\"$SCRIPT_DIR\"," "$CONF_FILE"
+if [ "$PLAT" == "Linux" ]; then
+  sed -i "s,^RSYNC_TARGET.*\$,RSYNC_TARGET=\"$RSYNC_TARGET\"," "$CONF_FILE"
+  sed -i "s,^RSYNC_PORT.*\$,RSYNC_PORT=\"$RSYNC_PORT\"," "$CONF_FILE"
+  sed -i "s,^RSYNC_USER.*\$,RSYNC_USER=\"$RSYNC_USER\"," "$CONF_FILE"
+  sed -i "s,^SCRIPT_DIR.*\$,SCRIPT_DIR=\"$SCRIPT_DIR\"," "$CONF_FILE"
+fi
+if [ "$PLAT" == "MacOS" ]; then
+  sed -i "" "s,^RSYNC_TARGET.*\$,RSYNC_TARGET=\"$RSYNC_TARGET\"," "$CONF_FILE"
+  sed -i "" "s,^RSYNC_PORT.*\$,RSYNC_PORT=\"$RSYNC_PORT\"," "$CONF_FILE"
+  sed -i "" "s,^RSYNC_USER.*\$,RSYNC_USER=\"$RSYNC_USER\"," "$CONF_FILE"
+  sed -i "" "s,^SCRIPT_DIR.*\$,SCRIPT_DIR=\"$SCRIPT_DIR\"," "$CONF_FILE"
+fi
 
 cat <<HERE > $CLIENT_CONF
 #!/bin/bash
