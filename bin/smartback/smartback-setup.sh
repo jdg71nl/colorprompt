@@ -172,7 +172,7 @@ cat <<HERE > $CLIENT_CONF
 CLIENT_NAME="$CLIENT_NAME"
 HERE
 
-BASE_DIR=$(realpath $SCRIPT_DIR/..s)
+BASE_DIR=$(realpath $SCRIPT_DIR/../)
 #
 echo "# - - - "
 echo "# run this command to copy the root:SSH-key to the remote rsync-server: "
