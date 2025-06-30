@@ -1,0 +1,31 @@
+#= sources.txt
+#
+#/etc/smartback/
+/etc/
+#
+/filesystem-root-list.txt.gz 
+#
+##/var/log/debpkgs
+#/var/log/apt_show_versions__log.txt
+#/var/log/dmesg__log.txt
+#/var/log/dpkg_l__log.txt
+#/var/log/lshw__log.txt
+#/var/log/raspinfo.txt
+#/var/log/hw_info_neofetch.txt
+/var/log/
+#
+# rpi-boot:
+/boot/cmdline.txt
+/boot/config.txt
+/boot/issue.txt
+/boot/firmware/cmdline.txt
+/boot/firmware/config.txt
+/boot/firmware/issue.txt
+/boot/xinitrc
+#
+/root/.ssh/
+/root/distro.info 
+#
+/home/jdg/.ssh/
+/home/jdg/distro.info 
+#
