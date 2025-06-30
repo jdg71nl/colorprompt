@@ -146,10 +146,10 @@ cp -av $CONF_TEMPL_DIR/* $CONF_DIR/
 
 echo "# now updating Parameters in CONF_FILE=$CONF_FILE  ..."
 #
-sed -i "" 's/^RSYNC_TARGET.*$/RSYNC_TARGET="'$RSYNC_TARGET'"/' ${CONF_FILE}
-sed -i "" 's/^RSYNC_PORT.*$/RSYNC_PORT="'$RSYNC_PORT'"/' ${CONF_FILE}
-sed -i "" 's/^RSYNC_USER.*$/RSYNC_USER="'$RSYNC_USER'"/' ${CONF_FILE}
-sed -i "" 's/^SCRIPT_DIR.*$/SCRIPT_DIR="'$SCRIPT_DIR'"/' ${CONF_FILE}
+sed -i "" "s/^RSYNC_TARGET.*$/RSYNC_TARGET=\"$RSYNC_TARGET\"/" ${CONF_FILE}
+sed -i "" "s/^RSYNC_PORT.*$/RSYNC_PORT=\"$RSYNC_PORT\"/" ${CONF_FILE}
+sed -i "" "s/^RSYNC_USER.*$/RSYNC_USER=\"$RSYNC_USER\"/" ${CONF_FILE}
+sed -i "" "s/^SCRIPT_DIR.*$/SCRIPT_DIR=\"$SCRIPT_DIR\"/" ${CONF_FILE}
 
 cat <<HERE > $CLIENT_CONF
 #!/bin/bash
