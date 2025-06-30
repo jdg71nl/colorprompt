@@ -172,11 +172,12 @@ cat <<HERE > $CLIENT_CONF
 CLIENT_NAME="$CLIENT_NAME"
 HERE
 
+BASE_DIR=$(realpath $SCRIPT_DIR/..s)
 #
 echo "# - - - "
 echo "# run this command to copy the root:SSH-key to the remote rsync-server: "
-echo "> sudo ssh-create-client-id_rsa.sh "
-echo "> sudo ssh-copy-id_rsa-pub.sh -p $RSYNC_PORT $RSYNC_USER@$RSYNC_TARGET "
+echo "> sudo $BASE_DIR/ssh-create-client-id_rsa.sh "
+echo "> sudo $BASE_DIR/ssh-copy-id_rsa-pub.sh -p $RSYNC_PORT $RSYNC_USER@$RSYNC_TARGET "
 
 #-eof
 
