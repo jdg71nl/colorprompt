@@ -41,7 +41,8 @@ usage() {
 RSYNC_TARGET=""
 RSYNC_PORT="22"
 RSYNC_USER="smartback"
-SCRIPT_DIR="$HOME/opensyssetup/bin/smartback"
+#SCRIPT_DIR="$HOME/opensyssetup/bin/smartback"
+SCRIPT_DIR="$HOME/colorprompt/bin/smartback"
 CLIENT_NAME=$(hostname -s)
 #
 while getopts ":h:p:u:d:c:" options; do
@@ -124,12 +125,13 @@ f_check_install_packages() {
 #
 f_check_install_packages sudo rsync apt-show-versions lshw raspinfo neofetch
 
-[ -f "$CONF_TEMPL_SH" ] && source "$CONF_TEMPL_SH"
+# DONT ===>   [ -f "$CONF_TEMPL_SH" ] && source "$CONF_TEMPL_SH"
 
 echo "# - - - "
 echo "# setup defaults in '$CONF_DIR' ..."
 echo 
 mkdir -pv $CONF_DIR/
+echo "# > cp -av $CONF_TEMPL_DIR/* $CONF_DIR/   ... "
 cp -av $CONF_TEMPL_DIR/* $CONF_DIR/
 
 ## Server-specific: [overwritten during first run of smartback.sh]
@@ -141,6 +143,8 @@ cp -av $CONF_TEMPL_DIR/* $CONF_DIR/
 
 #sed -i "" 's/^.*colorprompt.sh.*$//' ${BASHRC}
 #sed -i "" 's/^.*bashrc.*$/# &/'    ${CONF_FILE}
+
+echo "# now updating Parameters in CONF_FILE=$CONF_FILE  ..."
 #
 sed -i "" 's/^RSYNC_TARGET.*$/RSYNC_TARGET="'$RSYNC_TARGET'"/' ${CONF_FILE}
 sed -i "" 's/^RSYNC_PORT.*$/RSYNC_PORT="'$RSYNC_PORT'"/' ${CONF_FILE}
