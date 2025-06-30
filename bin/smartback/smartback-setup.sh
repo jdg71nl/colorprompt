@@ -89,7 +89,8 @@ echo "# PING Ok !"
 SSH_OPTS="-o StrictHostKeyChecking=accept-new -o ConnectTimeout=1 -o ConnectionAttempts=1"
 echo "# > /usr/bin/ssh -p $RSYNC_PORT $SSH_OPTS $RSYNC_USER@$RSYNC_TARGET 'exit 0'  ... "
 echo "# <start> "
-/usr/bin/ssh -p $RSYNC_PORT $SSH_OPTS $RSYNC_USER@$RSYNC_TARGET 'exit 0'
+#/usr/bin/ssh -p $RSYNC_PORT $SSH_OPTS $RSYNC_USER@$RSYNC_TARGET 'exit 0'
+/usr/bin/ssh -p $RSYNC_PORT $SSH_OPTS $RSYNC_USER@$RSYNC_TARGET 'mkdir ./smartback/'
 CAN_SSH=$? # <== Return_Code '0' means 'True'
 [ "$CAN_SSH" -ne 0 ] && echo "# Error: cannot login using SSH" && exit 1
 echo "# </stop> "
