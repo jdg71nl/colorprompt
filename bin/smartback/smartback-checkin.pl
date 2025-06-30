@@ -67,7 +67,7 @@ if (exists $ARGV[0] and $ARGV[0] eq '-') {
 }
 
 # system "_smartback-sortuniq.sh $sources"
-system "cat $sources | sort | uniq | grep -v '^#' > $sources.tmp && cat $sources.tmp > $sources && rm $sources.tmp2"
+system "cat $sources | sort | uniq | grep -v '^#' > $sources.tmp && cat $sources.tmp > $sources && rm $sources.tmp"
 
 #-eof
 

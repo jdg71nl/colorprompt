@@ -15,7 +15,19 @@ fi
 # - The $* holds list of all arguments passed to the script.
 # They aren't the same. $* is a single string, whereas $@ is an actual array.
 
-smartback-checkin.pl "$@"
+CONF_FILE="/etc/smartback/config.sh"
+[ ! -f "$CONF_FILE" ] && echo "# smartback:config.sh does not yet exist, please run smartback.sh first to create it." && exit 1
+#
+source $CONF_FILE
+#
+#SCRIPT_DIR
+
+# idea 'env' ==> https://stackoverflow.com/questions/12996397/command-not-found-when-using-sudo
+
+#smartback-checkin.pl "$@"
+#sudo -E env "PATH=$SCRIPT_DIR" smartback-checkin.pl "$@"
+#sudo -E env "PATH=$PATH" smartback-checkin.pl "$@"
+$SCRIPT_DIR/smartback-checkin.pl "$@"
 
 #-eof
 
