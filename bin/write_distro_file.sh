@@ -1,6 +1,16 @@
 #!/bin/bash
 # display every line executed in this bash script:
 
+BASENAME=`basename $0`
+echo "# running: $BASENAME ... "
+#SCRIPT=`realpath -s $0`  # man says: "-s, --strip, --no-symlinks : don't expand symlinks"
+# MacOS does not do '-s' :
+SCRIPT=`realpath $0`  
+SCRIPT_PATH=`dirname $SCRIPT`
+#echo "# now cd'ing (change dir) to:"
+cd $SCRIPT_PATH
+#pwd
+
 VERBOSE="N"
 #VERBOSE="Y"
 #set -o xtrace
@@ -18,7 +28,8 @@ echo_verbose() {
 
 BASENAME=$(basename $0)
 #FILE="/etc/distro.info"
-FILE="$HOME/distro.info"
+#FILE="$HOME/distro.info"
+FILE="../distro.info"
 
 # jdg: better not sudo here, as we want to write file to user-homedir..
 ## sudo

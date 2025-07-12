@@ -93,6 +93,9 @@ fifm2 ()  { echo "# bash-function, see 'type fifm':"; ffind . -xtype f -iname '*
 fifm3 () { egrep -sinH "$1" "$2"; }
 #
 # - - -: DISTRO info
+if [ -r $HOME/colorprompt/bin/write_distro_file.sh ]; then
+  $HOME/colorprompt/bin/write_distro_file.sh
+fi
 DISTROFILE="$HOME/colorprompt/distro.info"
 [[ -f $DISTROFILE ]] && source $DISTROFILE
 [[ -z $DISTRO_TYPE ]] && DISTRO_TYPE="Unknown-Distro"
