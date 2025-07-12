@@ -1,8 +1,12 @@
 #!/bin/bash
 # display every line executed in this bash script:
 
+SILENT=$1
+
 BASENAME=`basename $0`
-echo "# running: $BASENAME ... "
+if [ "$SILENT" != "silent" ]; then
+  echo "# running: $BASENAME ... "
+fi
 #SCRIPT=`realpath -s $0`  # man says: "-s, --strip, --no-symlinks : don't expand symlinks"
 # MacOS does not do '-s' :
 SCRIPT=`realpath $0`  
@@ -88,7 +92,9 @@ write_distro()
     if [[ -f ${RASPFILE} ]]; then
       #
       MODELSTRING="$( cat ${RASPFILE} | tr '\0' '\n' )"
-      echo_verbose "## MODELSTRING='${MODELSTRING}'"
+      if [ "$SILENT" != "silent" ]; then
+        echo_verbose "## MODELSTRING='${MODELSTRING}'"
+      fi
       #
       case "${MODELSTRING}" in
         "Raspberry Pi Zero W Rev 1.1")
@@ -348,13 +354,15 @@ write_distro()
   export JINFO_CODENAME="$COD"
   export JINFO_KERNEL="$KER"
 
-  echo "# JINFO_PLATFORM=\"$JINFO_PLATFORM\""
-  echo "# JINFO_HARDWARE=\"$JINFO_HARDWARE\""
-  echo "# JINFO_ISA=\"$JINFO_ISA\""
-  echo "# JINFO_OS=\"$JINFO_OS\""
-  echo "# JINFO_VERSION=\"$JINFO_VERSION\""
-  echo "# JINFO_CODENAME=\"$JINFO_CODENAME\""
-  echo "# JINFO_KERNEL=\"$JINFO_KERNEL\""
+  if [ "$SILENT" != "silent" ]; then
+    echo "# JINFO_PLATFORM=\"$JINFO_PLATFORM\""
+    echo "# JINFO_HARDWARE=\"$JINFO_HARDWARE\""
+    echo "# JINFO_ISA=\"$JINFO_ISA\""
+    echo "# JINFO_OS=\"$JINFO_OS\""
+    echo "# JINFO_VERSION=\"$JINFO_VERSION\""
+    echo "# JINFO_CODENAME=\"$JINFO_CODENAME\""
+    echo "# JINFO_KERNEL=\"$JINFO_KERNEL\""
+  fi
 
   #
 #  export JINFO_IP_eth0=$( ip -o -4 addr show eth0 | awk '{print $4}' | sed 's/\/.*$//' )
