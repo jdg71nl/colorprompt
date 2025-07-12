@@ -2,6 +2,9 @@
 # display every line executed in this bash script:
 
 VERBOSE="N"
+#VERBOSE="Y"
+#set -o xtrace
+#
 if [ $VERBOSE == "Y" ]; then
   set -o xtrace
 fi
@@ -13,7 +16,17 @@ echo_verbose() {
   fi
 }
 
-FILE="$HOME/colorprompt/distro.info"
+BASENAME=$(basename $0)
+#FILE="/etc/distro.info"
+FILE="$HOME/distro.info"
+
+# jdg: better not sudo here, as we want to write file to user-homedir..
+## sudo
+#MYID=$( id -u )
+#if [ $MYID != 0 ]; then
+#  #echo "# provide your password for 'sudo':" ; sudo "$0" "$*" ; exit 0 ;  # DONT USE $* !!
+#  echo "## provide your password for 'sudo':" ; sudo "$0" "$@" ; exit 0 ;
+#fi
 
 # - - - - - - - - + + + - - - - - - - - 
 
@@ -96,6 +109,9 @@ write_distro()
           ;;
         "Raspberry Pi 5 Model B Rev 1.0")
           HARD='RPI5b-1.0'
+          ;;
+        "Raspberry Pi Compute Module 5 Rev 1.0")
+          HARD='RPI-CM5-1.0'
           ;;
         "long string")
           HARD='shortstring'
@@ -313,9 +329,44 @@ write_distro()
   # os:Debian-12/bookworm,isa:x86_64
   # hw:RPI5b-1.0,os:Ubuntu-23.10/mantic,isa:aarch64
 
+  export JINFO_PLATFORM="$PLAT"
+  export JINFO_HARDWARE="$HARD"
+  export JINFO_ISA="$ISA"
+  export JINFO_OS="$OS"
+  export JINFO_VERSION="$VER"
+  export JINFO_CODENAME="$COD"
+  export JINFO_KERNEL="$KER"
+
+  echo "# JINFO_PLATFORM=\"$JINFO_PLATFORM\""
+  echo "# JINFO_HARDWARE=\"$JINFO_HARDWARE\""
+  echo "# JINFO_ISA=\"$JINFO_ISA\""
+  echo "# JINFO_OS=\"$JINFO_OS\""
+  echo "# JINFO_VERSION=\"$JINFO_VERSION\""
+  echo "# JINFO_CODENAME=\"$JINFO_CODENAME\""
+  echo "# JINFO_KERNEL=\"$JINFO_KERNEL\""
+
+  #
+#  export JINFO_IP_eth0=$( ip -o -4 addr show eth0 | awk '{print $4}' | sed 's/\/.*$//' )
+#  export JINFO_IP_eth1=$( ip -o -4 addr show eth1 | awk '{print $4}' | sed 's/\/.*$//' )
+#  export JINFO_IP_wlan0=$( ip -o -4 addr show wlan0 | awk '{print $4}' | sed 's/\/.*$//' )
+#  export JINFO_IP_wlan1=$( ip -o -4 addr show wlan1 | awk '{print $4}' | sed 's/\/.*$//' )
+#  export JINFO_IP_tun21=$( ip -o -4 addr show tun21 | awk '{print $4}' | sed 's/\/.*$//' )
+
+
+  # /etc/distro.info
+  # used by: $ HOME/syssetup/colorprompt.sh
   cat <<HERE >$FILE
-#= \$HOME/colorprompt/distro.info
+#= $HOME/distro.info
+# used by: $HOME/opensyssetup/colorprompt.sh
 DISTRO_TYPE="$DISTRO"
+#
+JINFO_PLATFORM="$JINFO_PLATFORM"
+JINFO_HARDWARE="$JINFO_HARDWARE"
+JINFO_ISA="$JINFO_ISA"
+JINFO_OS="$JINFO_OS"
+JINFO_VERSION="$JINFO_VERSION"
+JINFO_CODENAME="$JINFO_CODENAME"
+JINFO_KERNEL="$JINFO_KERNEL"
 #
 HERE
 
@@ -324,13 +375,72 @@ HERE
   if [ $VERBOSE == "Y" ]; then
     cat $FILE
   fi
-} # \write_distro()
+}
 
 # - - - - - - - - + + + - - - - - - - - 
 
+unknown_os ()
+{
+  echo_verbose "## unknown os/dist ..."
+  exit 1
+}
+
+detect_os ()
+{
+  if [[ ( -z "${os}" ) && ( -z "${dist}" ) ]]; then
+    # some systems dont have lsb-release yet have the lsb_release binary and
+    # vice-versa
+    if [ -e /etc/lsb-release ]; then
+      . /etc/lsb-release
+
+      if [ "${ID}" = "raspbian" ]; then
+        os=${ID}
+        dist=$(cut --delimiter='.' -f1 /etc/debian_version)
+      else
+        os=${DISTRIB_ID}
+        dist=${DISTRIB_CODENAME}
+
+        if [ -z "$dist" ]; then
+          dist=${DISTRIB_RELEASE}
+        fi
+      fi
+
+    elif [ $(which lsb_release 2>/dev/null) ]; then
+      dist=$(lsb_release -c | cut -f2)
+      os=$(lsb_release -i | cut -f2 | awk '{ print tolower($1) }')
+
+    elif [ -e /etc/debian_version ]; then
+      # some Debians have jessie/sid in their /etc/debian_version
+      # while others have '6.0.7'
+      os=$(cat /etc/issue | head -1 | awk '{ print tolower($1) }')
+      if grep -q '/' /etc/debian_version; then
+        dist=$(cut --delimiter='/' -f1 /etc/debian_version)
+      else
+        dist=$(cut --delimiter='.' -f1 /etc/debian_version)
+      fi
+
+    else
+      unknown_os
+    fi
+  fi
+
+  if [ -z "$dist" ]; then
+    unknown_os
+  fi
+
+  # remove whitespace from OS and dist name
+  os="${os// /}"
+  dist="${dist// /}"
+
+  echo_verbose "## Detected operating system as os="$os" dist="$dist" ."
+}
+
 main ()
 {
+  #echo "## running $BASENAME ..."
+  # detect_os
   write_distro
+
   echo_verbose "## done! "
 }
 
