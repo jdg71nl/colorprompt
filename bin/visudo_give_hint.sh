@@ -12,7 +12,7 @@ echo
 #
 read -p "press enter to start 'visudo' (but first copy above text) ... "
 #
-visudo
+sudo visudo
 #
 #-eof
 
