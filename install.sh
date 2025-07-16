@@ -5,7 +5,13 @@ echo "# [starting]: install.sh ... "
 # - - - - - - = = = - - - - - - . 
 echo "# [running] write_distro_file ... "
 #
-. $HOME/colorprompt/bin/write_distro_file.sh
+$HOME/colorprompt/bin/write_distro_file.sh
+echo "# done."
+#
+# - - - - - - = = = - - - - - - . 
+echo "# [updating] git-config ... "
+#
+$HOME/colorprompt/bin/git-config-jdg.sh
 echo "# done."
 #
 # - - - - - - = = = - - - - - - . 
