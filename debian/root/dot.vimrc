@@ -1,6 +1,6 @@
 " ~/.vimrc
-set tabstop=3
-set shiftwidth=3
+set tabstop=2
+set shiftwidth=2
 set incsearch
 set autoindent
 set smartindent
@@ -22,5 +22,5 @@ map f :call ShowFuncName() <CR>
 "
 "set softtabstop=0 noexpandtab
 set tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
-
-
+"
+"-eof

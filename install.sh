@@ -15,6 +15,15 @@ $HOME/colorprompt/bin/git-config-jdg.sh
 echo "# done."
 #
 # - - - - - - = = = - - - - - - . 
+echo "# [copying] .vimrc ... "
+#
+DATE_TAG=$(date +d%y%m%dt%H%M%S)
+SOURCE="$HOME/colorprompt/debian/root/dot.vimrc"
+TARGET="$HOME/.vimrc"
+[ -f "$TARGET" ] && cp -av "$TARGET" "$TARGET.$DATE_TAG"
+cp -av "$SOURCE" "$TARGET"
+#
+# - - - - - - = = = - - - - - - . 
 echo "# [updating] .bashrc ... "
 #
 BASHRC="$HOME/.bashrc"
