@@ -92,10 +92,10 @@ fifm ()  { echo "# bash-function, see 'type fifm':"; gfind . -xtype f -iname '*'
 fifm2 ()  { echo "# bash-function, see 'type fifm':"; ffind . -xtype f -iname '*'$2'*' -print0 | rargs -0 egrep -sinH "$1" "{}"; }
 fifm3 () { egrep -sinH "$1" "$2"; }
 #
-tarbase64 () { tar czf - "$@" | openssl base64 }
-untarbase64 () { cat | openssl base64 -d | tar xvzf - }
+tarbase64 () { tar czf - "$@" | openssl base64 ; }
+untarbase64 () { cat | openssl base64 -d | tar xvzf - ; }
 #
-multiline2line () { cat | perl -pe "s/\s+/ /" }
+multiline2line () { cat | perl -pe "s/\s+/ /" ; }
 #
 # - - -: DISTRO info
 if [ -r $HOME/colorprompt/bin/write_distro_file.sh ]; then
