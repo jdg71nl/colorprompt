@@ -95,6 +95,8 @@ fifm3 () { egrep -sinH "$1" "$2"; }
 tarbase64() { tar czf - "$@" | openssl base64 }
 untarbase64() { cat | openssl base64 -d | tar xvzf - }
 #
+multiline2line() { cat | perl -pe "s/\s+/ /" }
+#
 # - - -: DISTRO info
 if [ -r $HOME/colorprompt/bin/write_distro_file.sh ]; then
   $HOME/colorprompt/bin/write_distro_file.sh silent
