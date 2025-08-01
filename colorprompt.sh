@@ -97,6 +97,9 @@ untarbase64 () { cat | openssl base64 -d | tar xvzf - ; }
 #
 multiline2line () { cat | perl -pe "s/\s+/ /" ; }
 #
+openssl_show_crt () { /usr/bin/openssl x509 -text -noout -in "$@" ; }
+#.
+
 # - - -: DISTRO info
 if [ -r $HOME/colorprompt/bin/write_distro_file.sh ]; then
   $HOME/colorprompt/bin/write_distro_file.sh silent
