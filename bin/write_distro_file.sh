@@ -70,6 +70,15 @@ write_distro()
 
   # - - - - - - - - + + + - - - - - - - - 
 
+  # from: rpi_memsize_string.sh
+  CFILE="/proc/cpuinfo"
+  REV=""
+  [ -r "$CFILE" ] && REV=$(cat $CFILE | awk '/^Revision/ { print $3 }') 
+  MEM=""
+  [ -n "$REV" ] && MEM=$(curl -sL "https://www.perturb.org/rpi?rev=$REV" | iconv -f utf-8 -t us-ascii//TRANSLIT | grep ^Memory | awk 'BEGIN { FS=":" } {print $2}' | sed 's/ \/.*$//' | sed 's/GB/G/' | sed 's/MB/M/' | sed 's/ //g')
+
+  # - - - - - - - - + + + - - - - - - - - 
+
   #HARD='Unknown' 
   HARD=""
   #
@@ -332,7 +341,10 @@ write_distro()
   #DISTRO="plat:$PLAT,dist:$OS-$VER/$COD,kernel:$KER,arch:$ARCH"
   #DISTRO="hw:${HARD},plat:${PLAT},dist:${OS}-${VER}/${COD},kernel:${KER},arch:${ARCH}"
   #DISTRO="hw:${HARD},${OSSTRING}${KERNSTRING},isa:${ISA}"
+
   HARDSTRING="$HARD"
+  [ -n "$MEM" ] && HARDSTRING="$HARD/$MEM"
+
   if [ ! -z "${HARDSTRING}" ]; then
     HARDSTRING="hw:${HARDSTRING},"
   fi
@@ -469,4 +481,5 @@ main
 # DISTRO_TYPE="hw:Still-Unknown,os:Raspbian-10/buster,kernel:5.10.17+,arch:armhf,isa:armv6l"
 
 #
+
 
