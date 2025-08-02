@@ -59,7 +59,7 @@ MEM=""
 
 [ -n "$REV" ] && MEM=$(curl -sL "https://www.perturb.org/rpi?rev=$REV" | iconv -f utf-8 -t us-ascii//TRANSLIT | grep ^Memory | awk 'BEGIN { FS=":" } {print $2}' | sed 's/ \/.*$//' | sed 's/GB/G/' | sed 's/MB/M/' | sed 's/ //g')
 
-[ -n "$MEM" ] && MEM=$(free -h | grep ^Mem | awk '{print $2}' | tr -d '.0' | tr -d 'i')
+[ -z "$MEM" ] && MEM=$(free -h | grep ^Mem | awk '{print $2}' | tr -d '.0' | tr -d 'i')
 
 echo "# MEM = $MEM"
 
