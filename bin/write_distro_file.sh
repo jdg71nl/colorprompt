@@ -76,7 +76,7 @@ write_distro()
   [ -r "$CFILE" ] && REV=$(cat $CFILE | awk '/^Revision/ { print $3 }') 
   MEM=""
   [ -n "$REV" ] && MEM=$(curl -sL "https://www.perturb.org/rpi?rev=$REV" | iconv -f utf-8 -t us-ascii//TRANSLIT | grep ^Memory | awk 'BEGIN { FS=":" } {print $2}' | sed 's/ \/.*$//' | sed 's/GB/G/' | sed 's/MB/M/' | sed 's/ //g')
-  [ -z "$MEM" ] && MEM=$(free -h | grep ^Mem | awk '{print $2}' | tr -d '.0' | tr -d 'i')
+  [ -n "$REV" ] && [ -z "$MEM" ] && MEM=$(free -h | grep ^Mem | awk '{print $2}' | tr -d '.0' | tr -d 'i')
 
   # - - - - - - - - + + + - - - - - - - - 
 
@@ -209,8 +209,8 @@ write_distro()
   # 11.2
   #
   if [ "${PLAT}" = "MacOS" ]; then
-    #HARD="Mac"
-    HARD=""
+    HARD="Mac"
+    #HARD=""
     #
     SWVERS=$(sw_vers -productVersion)
     MAJOR=${SWVERS%.*}
@@ -343,12 +343,26 @@ write_distro()
   #DISTRO="hw:${HARD},plat:${PLAT},dist:${OS}-${VER}/${COD},kernel:${KER},arch:${ARCH}"
   #DISTRO="hw:${HARD},${OSSTRING}${KERNSTRING},isa:${ISA}"
 
-  HARDSTRING="$HARD"
-  [ -n "$MEM" ] && HARDSTRING="$HARD/$MEM"
+  # - - - - - - - - + + + - - - - - - - - 
 
-  if [ ! -z "${HARDSTRING}" ]; then
-    HARDSTRING="hw:${HARDSTRING},"
-  fi
+  CHAS=""
+  # the 'iconv' is needed when jq returns 'null' so to turn it into string 'null':
+  [ "$(which hostnamectl)" ] && CHAS=$(hostnamectl --json=pretty | jq -r .Chassis | iconv -f utf-8 -t us-ascii//TRANSLIT)
+  # outputs: null | laptop | vm
+  [ "$CHAS" == "null" ] && $CHAS=""
+  [ "$CHAS" == "laptop" ] && $CHAS="phy"
+
+  # - - - - - - - - + + + - - - - - - - - 
+
+  [ -z "$HARD" ] && HARD="$CHAS"
+  
+  HARDSTRING="$HARD"
+  [ -n "$HARD" ] && [ -n "$MEM" ] && HARDSTRING="$HARD/$MEM"
+  [ -n "${HARDSTRING}" ]&& [ -z "$CHAS" ] && HARDSTRING="hw:${HARDSTRING},"
+  [ -n "${HARDSTRING}" ]&& [ -n "$CHAS" ] && HARDSTRING="${HARDSTRING},"
+
+  # - - - - - - - - + + + - - - - - - - - 
+
   #DISTRO="${HARD}${OSSTRING}${KERNSTRING},isa:${ISA}"
   #
   # --------->>>>> Now we can build the DISTRO-string !! <<<<<----------- :
