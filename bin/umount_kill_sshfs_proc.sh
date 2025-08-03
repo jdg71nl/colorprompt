@@ -48,16 +48,18 @@ ps aux | grep sshfs | awk '/@.*'$DIR'/ {print}'
 
 echo "# "
 PID=$(ps aux | grep sshfs | awk '/@.*'$DIR'/ {print $2}')
+
+[ -z "$PID" ] && echo "# we could not find any Process with that mount-dir -- aborting!" && exit 1
+
 echo "# we are about to kill this process:"
 echo "# > kill $PID "
 echo "# "
 
 read -p "Press any key to continue, and ctrl-C to abort ..."
-echo "# "
+echo "# killing now ..."
 
 kill $PID
 
-echo "# "
 echo "# done."
 
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
