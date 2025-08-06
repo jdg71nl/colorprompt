@@ -151,15 +151,17 @@ write_distro()
       esac
     fi
 
-    OS=$(lsb_release -is)
+    # jdg: or we do: ==> if [ $(which lsb_release 2>/dev/null) ]; then ...
+
+    OS=$(lsb_release -is || echo "unknown")
     # Debian
 
-    VER=$(lsb_release -rs)
+    VER=$(lsb_release -rs || echo "unknown")
     # 8.7
     # 10
 
     # COD = Codename
-    COD=$(lsb_release -cs)
+    COD=$(lsb_release -cs || echo "unknown")
     # jessie
     # buster
 
