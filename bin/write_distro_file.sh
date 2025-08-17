@@ -108,10 +108,13 @@ write_distro()
       #
       case "${MODELSTRING}" in
         "Raspberry Pi Zero W Rev 1.1")
-          HARD='RPIZW-1.1'
+          HARD='RPI0w-1.1'
+          ;;
+        "Raspberry Pi Zero 2 W Rev 1.0")
+          HARD='RPI02w-1.0'
           ;;
         "Raspberry Pi Model B Plus Rev 1.2")
-          HARD='RPI1B+1.2'
+          HARD='RPI1b+1.2'
           ;;
         "Raspberry Pi 2 Model B Rev 1.1")
           HARD='RPI2b-1.1'
