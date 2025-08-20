@@ -50,8 +50,14 @@ alias ng_sudo='f(){ sudo lsof -i -n -P +c0 | egrep "PID|$1" ; unset -f f; }; f'
 alias psg='ps aux | grep'
 alias psg_sudo='sudo ps aux | grep'
 alias fm='/usr/bin/find . \( -path "*.svn*" -prune \) -o \( -path "*/proc/*" -prune \) -o \( -type f -printf "%010T@ [%Tc] (%10s Bytes) %p\n" \) | sort -n | tail'
-alias ifc='echo "# ip addr show | egrep -i \"mtu|ether|inet\" .." && ip addr show | egrep -i "mtu|ether|inet"'
-alias ifcm='ifconfig | egrep "mtu|ether|inet"'
+#
+#alias ifc='echo "# ip addr show | egrep -i \"mtu|ether|inet\" .." && ip addr show | egrep -i "mtu|ether|inet"'
+#alias ifcm='ifconfig | egrep "mtu|ether|inet"'
+# [ "$(uname -s)" == "Darwin" ] && ...
+# [ "$(uname -s)" == "Linux" ] && ...
+[ "$(uname -s)" == "Linux" ] && alias ifconfig='ip addr show' && alias ifc='echo "# ip addr show | egrep -i \"mtu|ether|inet\" .." && ip addr show | egrep -i "mtu|ether|inet"'
+[ "$(uname -s)" == "Darwin" ] && alias ifc='echo "# ifconfig | egrep -i \"mtu|ether|inet\" .." && ifconfig | egrep -i "mtu|ether|inet"'
+#
 alias cdp='echo "change dir to: `pwd -P` ..";cd "`pwd -P`"'
 alias dusort='find . -maxdepth 1 -type d -exec du -sbx "{}" \;  | convertsize.pl | append_slash.pl | sort'
 alias dusort2='f_dusort2(){ sudo du -hxd 1 $1 | sort -h ; unset -f f_dusort2; }; f_dusort2'

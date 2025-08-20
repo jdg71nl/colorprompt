@@ -68,6 +68,10 @@ write_distro()
       ;;
   esac
 
+  # or use:
+  # [ "$(uname -s)" == "Darwin" ] && ...
+  # [ "$(uname -s)" == "Linux" ] && ...
+
   # - - - - - - - - + + + - - - - - - - - 
 
   # from: rpi_memsize_string.sh
@@ -189,6 +193,7 @@ write_distro()
 
   # https://www.cyberciti.biz/faq/mac-osx-find-tell-operating-system-version-from-bash-prompt/
   # https://www.shell-tips.com/mac/find-macos-version/
+  # https://en.wikipedia.org/wiki/MacOS#Release_history
   #
   # > sw_vers
   # ProductName:    macOS
@@ -218,79 +223,91 @@ write_distro()
     #HARD=""
     #
     SWVERS=$(sw_vers -productVersion)
-    MAJOR=${SWVERS%.*}
+    MAJOR2=${SWVERS%.*}
+    MAJOR1=${MAJOR2%.*}
+    if [ "$SILENT" != "silent" ]; then
+      echo "# MacOS: SWVERS=$SWVERS MAJOR2=$MAJOR2 MAJOR1=$MAJOR1 "
+    fi
     #
-    case "${MAJOR}" in
-      "10.0")
-        FRIENDLY="Cheetah"
-        ;;
-      "10.1")
-        FRIENDLY="Puma"
-        ;;
-      "10.2")
-        FRIENDLY="Jaguar"
-        ;;
-      "10.3")
-        FRIENDLY="Panther"
-        ;;
-      "10.4")
-        FRIENDLY="Tiger"
-        ;;
-      "10.5")
-        FRIENDLY="Leopard"
-        ;;
-      "10.6")
-        FRIENDLY="Snow Leopard"
-        ;;
-      "10.7")
-        FRIENDLY="Lion"
-        ;;
-      "10.8")
-        FRIENDLY="Mountain Lion"
-        ;;
-      "10.9")
-        FRIENDLY="Mavericks"
-        ;;
-      "10.10")
-        FRIENDLY="Yosemite"
-        ;;
-      "10.11")
-        FRIENDLY="El Capitan"
-        ;;
-      "10.12")
-        FRIENDLY="Sierra"
-        ;;
-      "10.13")
-        FRIENDLY="High Sierra"
-        ;;
-      "10.14")
-        FRIENDLY="Mojave"
-        ;;
-      "10.15")
-        FRIENDLY="Catalina"
-        ;;
-      "11.0")
-        FRIENDLY="Big Sur"
-        ;;
-      "11")
-        FRIENDLY="Big Sur"
-        ;;
-      "11.1")
-        FRIENDLY="Big Sur"
-        ;;
-      "11.2")
-        FRIENDLY="Big Sur"
-        ;;
-      "11.3")
-        FRIENDLY="Big Sur"
-        ;;
-      "11.4")
-        FRIENDLY="Big Sur"
-        ;;
+    if [ "$MAJOR1" == "10" ]; then
+      case "${MAJOR2}" in
+        "10.0")
+          FRIENDLY="Cheetah"
+          ;;
+        "10.1")
+          FRIENDLY="Puma"
+          ;;
+        "10.2")
+          FRIENDLY="Jaguar"
+          ;;
+        "10.3")
+          FRIENDLY="Panther"
+          ;;
+        "10.4")
+          FRIENDLY="Tiger"
+          ;;
+        "10.5")
+          FRIENDLY="Leopard"
+          ;;
+        "10.6")
+          FRIENDLY="Snow Leopard"
+          ;;
+        "10.7")
+          FRIENDLY="Lion"
+          ;;
+        "10.8")
+          FRIENDLY="Mountain Lion"
+          ;;
+        "10.9")
+          FRIENDLY="Mavericks"
+          ;;
+        "10.10")
+          FRIENDLY="Yosemite"
+          ;;
+        "10.11")
+          FRIENDLY="El Capitan"
+          ;;
+        "10.12")
+          FRIENDLY="Sierra"
+          ;;
+        "10.13")
+          FRIENDLY="High Sierra"
+          ;;
+        "10.14")
+          FRIENDLY="Mojave"
+          ;;
+        "10.15")
+          FRIENDLY="Catalina"
+          ;;
+        *)
+          FRIENDLY=""
+          ;;
+      esac
+    else
+      case "${MAJOR1}" in
+        "11")
+          FRIENDLY="Big Sur"
+          ;;
+        "12")
+          FRIENDLY="Monterey"
+          ;;
+        "13")
+          FRIENDLY="Ventura"
+          ;;
+        "14")
+          FRIENDLY="Sonoma"
+          ;;
+        "15")
+          FRIENDLY="Sequoia"
+          ;;
+        "26")
+          FRIENDLY="Tahoe"
+          ;;
       *)
         FRIENDLY=""
         ;;
-    esac
+      esac
+    fi
     #
     OSSTRING="os:MacOS-${FRIENDLY}-${SWVERS}"
     KERNSTRING=""
@@ -426,70 +443,13 @@ HERE
   if [ $VERBOSE == "Y" ]; then
     cat $FILE
   fi
-}
+} # // write_distro()
 
 # - - - - - - - - + + + - - - - - - - - 
-
-unknown_os ()
-{
-  echo_verbose "## unknown os/dist ..."
-  exit 1
-}
-
-detect_os ()
-{
-  if [[ ( -z "${os}" ) && ( -z "${dist}" ) ]]; then
-    # some systems dont have lsb-release yet have the lsb_release binary and
-    # vice-versa
-    if [ -e /etc/lsb-release ]; then
-      . /etc/lsb-release
-
-      if [ "${ID}" = "raspbian" ]; then
-        os=${ID}
-        dist=$(cut --delimiter='.' -f1 /etc/debian_version)
-      else
-        os=${DISTRIB_ID}
-        dist=${DISTRIB_CODENAME}
-
-        if [ -z "$dist" ]; then
-          dist=${DISTRIB_RELEASE}
-        fi
-      fi
-
-    elif [ $(which lsb_release 2>/dev/null) ]; then
-      dist=$(lsb_release -c | cut -f2)
-      os=$(lsb_release -i | cut -f2 | awk '{ print tolower($1) }')
-
-    elif [ -e /etc/debian_version ]; then
-      # some Debians have jessie/sid in their /etc/debian_version
-      # while others have '6.0.7'
-      os=$(cat /etc/issue | head -1 | awk '{ print tolower($1) }')
-      if grep -q '/' /etc/debian_version; then
-        dist=$(cut --delimiter='/' -f1 /etc/debian_version)
-      else
-        dist=$(cut --delimiter='.' -f1 /etc/debian_version)
-      fi
-
-    else
-      unknown_os
-    fi
-  fi
-
-  if [ -z "$dist" ]; then
-    unknown_os
-  fi
-
-  # remove whitespace from OS and dist name
-  os="${os// /}"
-  dist="${dist// /}"
-
-  echo_verbose "## Detected operating system as os="$os" dist="$dist" ."
-}
 
 main ()
 {
   #echo "## running $BASENAME ..."
-  # detect_os
   write_distro
 
   echo_verbose "## done! "
