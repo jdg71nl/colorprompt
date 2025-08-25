@@ -94,12 +94,12 @@ done
 #lock="/var/lock/subsys/openvpn"
 #jdg
 mkdir -pv /var/lock/subsys/
-lock="/var/lock/subsys/openvpn-$section"
+lock="/var/lock/subsys/openvpnjdg-$section"
 
 # PID directory
 #piddir="/var/run/openvpn"
 #jdg
-piddir="/var/run/openvpn-$section"
+piddir="/var/run/openvpnjdg-$section"
 mkdir -p $piddir
 
 # Our working directory
