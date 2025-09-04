@@ -1,0 +1,13 @@
+#= linux-routing.quicky.txt
+
+# https://heitorpb.github.io/bla/ip-route-add-blackhole/
+# https://www.oasys.net/fragments/iproute2-blackhole-route/
+# https://discuss.linuxcontainers.org/t/prevent-routing-of-private-network-to-public/15275/2
+# "You can use unreachable, prohibit or blackhole. With the first two giving an ICMP response back to the originator explaining why its blocked and the last one simply dropping the packet."
+
+ip route add blackhole 10.0.0.0/8
+ip route add blackhole 172.16.0.0/12
+ip route add blackhole 192.168.0.0/16
+
+#-eof
+

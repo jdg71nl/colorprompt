@@ -1,0 +1,138 @@
+# lvm.quicky
+# - - - - - - = = = - - - - - - . 
+
+# d250602 my Ubuntu Server 24.04 install used 50% available space (LVM: LV = 50% VG)
+# tip: https://www.linuxtechi.com/extend-lvm-partitions/
+
+> lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+> resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+
+# LOG:
+--[CWD=~]--[1748892783 19:33:03 Mon 02-Jun-2025 UTC]--[root@ub24-04-devstack-vm-mini2]--[os:Ubuntu-24.04/noble,isa:aarch64]------
+
+> lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+  Size of logical volume ubuntu-vg/ubuntu-lv changed from 15.47 GiB (3961 extents) to <30.95 GiB (7922 extents).
+  Logical volume ubuntu-vg/ubuntu-lv successfully resized.
+
+> vgdisplay
+  --- Volume group ---
+  VG Name               ubuntu-vg
+  System ID
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  3
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                1
+  Open LV               1
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               <30.95 GiB
+  PE Size               4.00 MiB
+  Total PE              7922
+  Alloc PE / Size       7922 / <30.95 GiB
+  Free  PE / Size       0 / 0
+  VG UUID               fWqN6h-emdu-FdA2-33U9-nbXD-FdNe-kWcYd8
+
+> resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+
+resize2fs 1.47.0 (5-Feb-2023)
+Filesystem at /dev/mapper/ubuntu--vg-ubuntu--lv is mounted on /; on-line resizing required
+old_desc_blocks = 2, new_desc_blocks = 4
+The filesystem on /dev/mapper/ubuntu--vg-ubuntu--lv is now 8112128 (4k) blocks long.
+#.
+
+
+# - - - - - - = = = - - - - - - . 
+# old (before d250602)
+--
+HOWTO create LVM:
+
+# change part.type
+fdisk /dev/hda
+	Command (m for help): t
+	Partition number (1-4): 3
+	Hex code (type L to list codes): 8e
+	Changed system type of partition 3 to 8e (Linux LVM)
+
+# Physical Volume
+pvcreate /dev/hda4
+# Volume Group
+vgcreate VolGroup00 /dev/hda4
+vgextend VolGroup00 /dev/hda3
+# Activate
+vgchange -a y VolGroup00
+
+# -L80 = 80MB -- "A size suffix of K for kilobytes, M for megabytes, G for gigabytes, T for terabytes, Default unit is megabytes."
+# 
+lvcreate -L80 -nLV_backup VolGroup00
+lvcreate -L120 -nLV_data VolGroup00
+# vi /etc/fstab (carefull: need to format, or will hang at next boot fsck!!)
+	#/dev/hda3                 /var/sbc/data           ext3    defaults        1 2
+	#/dev/hda4                 /var/sbc/backup         ext3    defaults        1 2
+	/dev/VolGroup00/LV_data    /var/sbc/data           ext3    defaults        1 2
+	/dev/VolGroup00/LV_backup  /var/sbc/backup         ext3    defaults        1 2
+# Format:
+mkfs.ext3 /dev/VolGroup00/LV_backup
+mkfs.ext3 /dev/VolGroup00/LV_data
+# test mount
+mount -a
+
+# remove / delete:
+lvremove /dev/VG00/LV_d1
+
+--
+HOWTO display information:
+
+pvscan
+pvdisplay
+vgscan
+vgdisplay
+lvscan
+lvdisplay
+
+--
+ref: http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/LVM-HOWTO.html
+--
+# To make a Log Vol active do:
+lvchange -ay VolGroup01/LogVol02
+--
+# d1804 resize:
+http://www.geoffstratton.com/expand-hard-disk-ubuntu-lvm
+
+vgextend ubuntu-1004 /dev/sda4
+lvextend -l+100%FREE /dev/ubuntu-1004/root
+resize2fs /dev/mapper/ubuntu--1004-root
+
+--
+# old?
+HOWTO resize ext2/ext3 filesystem and partition with LVM:
+
+# Boot CDROM/DVD in rescue mode ("linux rescue")
+
+# start lvm manually:
+> lvm
+lvm> vgscan
+lvm> vgchange --available y VolGroup00
+lvm> exit
+
+> e2fsck -f /dev/VolGroup00/LogVol00          # check & repair
+> resize2fs -p /dev/VolGroup00/LogVol00 20G   # resize to 20G
+> e2fsck -f /dev/VolGroup00/LogVol00          # check & repair
+
+> lvm
+lvm> lvreduce -L20G /dev/VolGroup00/LogVol00
+lvm> exit
+> e2fsck -f /dev/VolGroup00/LogVol00          # check & repair
+
+> lvm
+lvm> lvcreate -L55.25G -nhome              # create volume for /home
+lvm> exit
+> mkfs -t ext3 /dev/VolGroup00/home
+> e2fsck -f /dev/VolGroup00/home              # check & repair
+--
+
+--
+

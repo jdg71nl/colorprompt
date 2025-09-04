@@ -1,0 +1,60 @@
+#= wlan_wifi_wireless.quicky 
+
+# info:
+- https://hewlettpackard.github.io/wireless-tools/Tools.html
+- https://github.com/mrjohannchang/wifiscan
+- https://unix.stackexchange.com/questions/443462/where-is-the-human-parseable-wifi-scanning-tool-for-linux
+
+### scan SSID's:
+#
+# nice compact interface CLI, also wpa_cli seems to be most modern package, part of wpa_supplicant :
+# active/new scan:
+sudo wpa_cli scan
+# show last scan:
+sudo wpa_cli scan_results
+#
+##
+# active/new scan:
+sudo iwlist wlan0 scan 
+# show last scan:
+sudo iwlist wlan0 scan last
+
+# jdg: needs to first run 'wpa_cli scan', to next show details in 'wpa_cli scan_results'
+> sudo wpa_cli scan
+Selected interface 'wlan0'
+OK
+#
+--[CWD=~/opensyssetup/info(git:main)]--[1699795352 14:22:32 Sun 12-Nov-2023 CET]--[jdg@rpi3b-erouter-vxb86s]--[hw:RPI3b-1.2,os:Raspbian-11/bullseye,kernel:6.1.21-v7+,isa:armv7l]------
+> sudo wpa_cli scan_results
+Selected interface 'wlan0'
+bssid / frequency / signal level / flags / ssid
+74:da:38:67:a2:f6       2437    -76     [WPA2-PSK-CCMP][ESS]    kz44-direct-2G
+e4:5f:01:82:c4:7e       2437    -57     [WPA2-PSK-CCMP][ESS]    happy-camper-2g
+60:a4:b7:6a:02:fe       2442    -77     [WPA2-PSK-CCMP][WPS][ESS]       hilbrunts
+
+# problems with wlan0 ?
+# --[CWD=~]--[1704621031 10:50:31 Sun 07-Jan-2024 CET]--[root@rpi4b-virb-werouter]--[hw:RPI4b-1.5,os:Debian-12/bookworm,kernel:6.1.0-rpi7-rpi-v8,isa:aarch64]------
+# > wpa_cli scan
+# Failed to connect to non-global ctrl_ifname: (nil)  error: Success
+# 
+# solution:
+# https://raspberrypi.stackexchange.com/questions/67311/failed-to-connect-to-non-global-ctrl-ifname-when-running-wpa-cli-reconfigure
+# First, check how the wpa_supplicant service is launched by sudo systemctl status, if it indicates
+# /sbin/wpa_supplicant -u -s -O /run/wpa_supplicant
+# , then you got the problem.
+> grep ExecStart /usr/lib/systemd/system/wpa_supplicant@.service 
+#ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -i%I
+ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -i%I -Dnl80211,wext 
+
+
+# - - -
+# other command's ?
+
+iwlist scan
+iwconfig
+iwlist key
+> sudo iwlist wlan0 scan | grep ESSID
+
+# - - -
+#-eof
+

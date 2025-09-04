@@ -1,0 +1,10 @@
+#
+
+# d250702
+
+apt install libxcb-xinerama0 libxcb-cursor0 libpcre2-16-0
+
+dpkg -i scrt-9.6.3-3599.ubuntu24-64.x86_64.deb
+
+#-eof
+
