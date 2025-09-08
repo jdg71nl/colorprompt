@@ -1,0 +1,45 @@
+#= 
+
+# - - - 
+# how to install, startup-start and stop openvpn on MacOS
+
+brew install openvpn
+
+
+--[CWD=~/colorprompt(git:main)]--[1757232840 10:14:00 Sun 07-Sep-2025 CEST]--[jdg@MacMiniM2-jdg71nl]--[hw:Mac,os:MacOS-Sequoia-15.6.1,isa:arm64]------
+> brew info openvpn
+==> openvpn: stable 2.6.14 (bottled)
+SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
+https://openvpn.net/community/
+Installed
+/opt/homebrew/Cellar/openvpn/2.6.14 (80 files, 1.7MB) *
+  Poured from bottle using the formulae.brew.sh API on 2025-06-11 at 22:09:32
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/o/openvpn.rb
+License: GPL-2.0-only WITH openvpn-openssl-exception
+==> Dependencies
+Build: pkgconf ✔
+Required: lz4 ✔, lzo ✔, openssl@3 ✔, pkcs11-helper ✔
+==> Caveats
+To start openvpn now and restart at startup:
+  sudo brew services start openvpn
+Or, if you don't want/need a background service you can just run:
+  /opt/homebrew/opt/openvpn/sbin/openvpn --config /opt/homebrew/etc/openvpn/openvpn.conf
+==> Downloading https://formulae.brew.sh/api/formula/openvpn.json
+==> Analytics
+install: 2,323 (30 days), 7,450 (90 days), 39,441 (365 days)
+install-on-request: 2,322 (30 days), 7,448 (90 days), 39,397 (365 days)
+build-error: 13 (30 days)
+
+# - - - 
+
+sudo brew services start openvpn
+sudo brew services stop openvpn
+
+# - - - 
+# run in foreground:
+
+/opt/homebrew/opt/openvpn/sbin/openvpn --config /opt/homebrew/etc/openvpn/openvpn.conf
+
+# - - - 
+#-eof
+
