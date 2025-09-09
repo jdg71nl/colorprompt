@@ -20,6 +20,12 @@ Enhancement 3: This is such a common operation, that many shells have a
 # shorthand to a single &> operator
 cmd &> /dev/null
 
+# d250909-jdg nice explanation here: https://unix.stackexchange.com/questions/119648/redirecting-to-dev-null
+" When you run CMD > /dev/null 2>&1
+  STDOUT redirects to /dev/null, and then STDERR redirects to THE ADDRESS of STDOUT, which has been set to /dev/null , consequently both STDOUT and STDERR point to /dev/null
+  Oppositely, when you run CMD 2>&1 >/dev/null
+  STDERR redirects to THE ADDRESS of STDOUT (File descriptor 1 in that moment, or /proc/self/fd/1), and then STDOUT redirects to /dev/null , but STDERR keeps redirecting to fd1! As a result the normal output from STDOUT is discarded, but the errors coming from STDERR are still being written onto the console."
+
 
 # - - - 
 # (jdg-pre-d250909)
