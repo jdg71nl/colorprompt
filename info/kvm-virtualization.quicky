@@ -1,5 +1,12 @@
 # kvm-virtualization.quicky
 
+# d250909
+# install 'kvm-ok' :
+apt install cpu-checker
+
+# - - - 
+# pre-d250909
+
 # d210331 start CentOS.qcow2 image with Nokia-vSR-Lab on Debian-10/buster on Rock10T
 # need 'nested kvm', do on host (rock10t):
 #
