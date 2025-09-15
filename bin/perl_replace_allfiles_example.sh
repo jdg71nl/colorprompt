@@ -7,7 +7,7 @@
 
 # find . \( -path "./.*" -prune \) -o \( -name '*perl_replace_allfiles_example.*' -prune \) -o \( -type f -name '*.sh' -exec perl -i -pe 's/sudo(.*?)exit 1/sudo$1exit 0/' {} \; \)
 
-echo find . -type f -name '*.sh' -exec perl -i -pe 's/replace (this) string/with this $1 string/' {} \; 
+echo "find . -type f -iname \"*.sh\" -print -exec perl -i -pe 's/replace (this) string/with this $1 string/' {} \;"
 
 #-eof
 
