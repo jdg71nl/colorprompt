@@ -55,8 +55,13 @@ alias fm='/usr/bin/find . \( -path "*.svn*" -prune \) -o \( -path "*/proc/*" -pr
 #alias ifcm='ifconfig | egrep "mtu|ether|inet"'
 # [ "$(uname -s)" == "Darwin" ] && ...
 # [ "$(uname -s)" == "Linux" ] && ...
-[ "$(uname -s)" == "Linux" ] && alias ifconfig='ip addr show' && alias ifc='echo "# ip addr show | egrep -i \"mtu|ether|inet\" .." && ip addr show | egrep -i "mtu|ether|inet"'
-[ "$(uname -s)" == "Darwin" ] && alias ifc='echo "# ifconfig | egrep -i \"mtu|ether|inet\" .." && ifconfig | egrep -i "mtu|ether|inet"'
+[ "$(uname -s)" == "Linux" ]  && alias ifconfig='ip addr show'
+[ "$(uname -s)" == "Linux" ]  && alias ifc='echo "# ip addr show | egrep -i \"mtu|inet\" .." && ip addr show | egrep -i "mtu|inet"'
+[ "$(uname -s)" == "Darwin" ] && alias ifc='echo "# ifconfig | egrep -i \"mtu|inet\" .." && ifconfig | egrep -i "mtu|inet"'
+[ "$(uname -s)" == "Linux" ]  && alias ifce='echo "# ip addr show | egrep -i \"mtu|ether|inet\" .." && ip addr show | egrep -i "mtu|ether|inet"'
+[ "$(uname -s)" == "Darwin" ] && alias ifce='echo "# ifconfig | egrep -i \"mtu|ether|inet\" .." && ifconfig | egrep -i "mtu|ether|inet"'
+[ "$(uname -s)" == "Linux" ]  && alias ifc4='echo "# ip addr show | egrep -i \"mtu|inet \" .." && ip addr show | egrep -i "mtu|inet " | grep -B1 "inet " | grep -v "^-"'
+[ "$(uname -s)" == "Darwin" ] && alias ifc4='echo "# ifconfig | egrep -i \"mtu|inet \" .." && ifconfig | egrep -i "mtu|inet " | grep -B1 "inet " | grep -v "^-"'
 #
 alias cdp='echo "change dir to: `pwd -P` ..";cd "`pwd -P`"'
 alias dusort='find . -maxdepth 1 -type d -exec du -sbx "{}" \;  | convertsize.pl | append_slash.pl | sort'
