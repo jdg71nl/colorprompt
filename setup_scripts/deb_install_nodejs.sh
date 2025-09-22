@@ -93,12 +93,21 @@ apt install -y nodejs
 # > sudo npm i pm2 -g
 
 #
+if [ ! -f /usr/local/bin/node ]; then
+  ln -s /usr/bin/node /usr/local/bin/node
+fi
+
+#
 npm i -g npm
+
+#
+if false; then
 npm i nodemon -g
 npm i pm2 -g
 sudo -u jdg pm2
 sudo -u jdg pm2 startup
 env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u jdg --hp /home/jdg
+fi
 #
 exit 0
 #
