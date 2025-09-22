@@ -392,9 +392,6 @@ async function fa_main() {
   console_log_print(func_name, `pwd_str = ${pwd_str}`);
   //
   // > ~/colorprompt/bin/jgoodpass.js
-  // # jgoodpass.js:global() pwd_str = RuK66_41Yuv.TUF24.
-  // # jgoodpass.js:global() pwd_str = 36Luy-XEx90.97Dap-
-  // # jgoodpass.js:global() pwd_str = Huc12-59ruQ-Far35.
   // # jgoodpass.js:global() pwd_str = QaP26-jeP68_Rar85
   // # jgoodpass.js:global() pwd_str = nuG87-nAN47-07vAd
   // # jgoodpass.js:global() pwd_str = 31GaF-vAX27.xUQ37
