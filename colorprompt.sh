@@ -47,8 +47,8 @@ alias cls='clear'
 alias hig='history | grep'
 alias ng='f(){ lsof -i -n -P +c0 | egrep "PID|$1" ; unset -f f; }; f'
 alias ng_sudo='f(){ sudo lsof -i -n -P +c0 | egrep "PID|$1" ; unset -f f; }; f'
-alias psg='ps aux | grep'
-alias psg_sudo='sudo ps aux | grep'
+#alias psg='ps aux | grep'
+#alias psg_sudo='sudo ps aux | grep'
 alias fm='/usr/bin/find . \( -path "*.svn*" -prune \) -o \( -path "*/proc/*" -prune \) -o \( -type f -printf "%010T@ [%Tc] (%10s Bytes) %p\n" \) | sort -n | tail'
 #
 #alias ifc='echo "# ip addr show | egrep -i \"mtu|ether|inet\" .." && ip addr show | egrep -i "mtu|ether|inet"'
@@ -90,6 +90,7 @@ alias curl-save="curl -fsLO"
 alias htop='TERM=xterm-color htop'
 #
 # - - -: Function
+psg () { echo "# (bash-func) ps aux | egrep \"^USER|$1\" " ; ps aux | egrep "^USER|$1" ; }
 ff ()   { echo "# bash-function, see 'type ff':";  /usr/bin/find . -iname '*'$1'*'; }
 ff2 ()  { echo "# bash-function, see 'type ff2':"; /usr/bin/find . ! -ipath '*.svn*' -iname '*'$1'*'; }
 fif ()  { echo "# bash-function, see 'type fif':"; /usr/bin/find . -xtype f -iname '*'$2'*' -print0 | xargs -0i grep -sinH "$1" "{}"; }
