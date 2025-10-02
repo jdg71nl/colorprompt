@@ -1,0 +1,14 @@
+#= nested-virtualization.quicky.txt
+
+https://serverfault.com/questions/393498/running-kvm-vms-on-top-of-vmware-vms
+
+egrep -c '(vmx|svm)' /proc/cpuinfo
+
+# on x86/x64
+sudo apt-get install qemu-kvm libvirt-bin
+
+# on ARM:
+sudo apt install qemu-system-arm libvirt-clients-qemu
+
+#-eof
+

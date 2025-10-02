@@ -15,6 +15,9 @@ CHAS=""
 [ "$CHAS" == "null" ] && CHAS=""
 [ "$CHAS" == "laptop" ] && CHAS="phy"
 
+echo "# CHAS='$CHAS' "
+echo "# Note: this functionality is also integrated in: write_distro_file.sh "
+
 #-eof
 
 #: --[CWD=~/colorprompt(git:main)]--[1754163659 21:40:59 Sat 02-Aug-2025 CEST]--[dcs@D-211-201]--[hw:RPI4b-1.4/2G,os:Debian-12/bookworm,isa:aarch64]------
