@@ -90,7 +90,7 @@ alias curl-save="curl -fsLO"
 alias htop='TERM=xterm-color htop'
 #
 # - - -: Function
-psg () { echo "# (bash-func) ps aux | egrep \"^USER|$1\" " ; ps aux | egrep "^USER|$1" ; }
+psg () { echo "# (bash-func) ps aux | egrep \"^USER|$1\" "; ps aux | egrep "^USER|$1"; }
 ff ()   { echo "# bash-function, see 'type ff':";  /usr/bin/find . -iname '*'$1'*'; }
 ff2 ()  { echo "# bash-function, see 'type ff2':"; /usr/bin/find . ! -ipath '*.svn*' -iname '*'$1'*'; }
 fif ()  { echo "# bash-function, see 'type fif':"; /usr/bin/find . -xtype f -iname '*'$2'*' -print0 | xargs -0i grep -sinH "$1" "{}"; }
