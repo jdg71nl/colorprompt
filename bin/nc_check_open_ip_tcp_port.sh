@@ -21,8 +21,8 @@ fi
 IP="$1"
 PORT="$2"
 
-echo "# > nc -z $IP $PORT &>/dev/null && echo '#: open' || echo '#: closed' "
-nc -z $IP $PORT &>/dev/null && echo "#: open" || echo "#: closed"
+echo "# > nc -w 1 -z $IP $PORT &>/dev/null && echo '# => open' || echo '# => closed' "
+nc -w 1 -z $IP $PORT &>/dev/null && echo "# => open" || echo "# => closed"
 
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
 # - - - - - - = = = - - - - - - . 
