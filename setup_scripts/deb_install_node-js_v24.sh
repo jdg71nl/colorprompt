@@ -70,11 +70,13 @@ if [ ! -f /usr/local/bin/node ]; then
 fi
 
 #
-npm i -g npm
+sudo npm i -g npm
 
 #
-echo "# consider installing (manually) > npm i -g nodemon "
-echo "# consider installing (manually) > npm i -g pm2 "
+sudo npm i -g nodemon
+
+#
+sudo npm i -g pm2
 
 exit 0
 #
