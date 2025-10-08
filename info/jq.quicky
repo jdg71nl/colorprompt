@@ -1,5 +1,26 @@
 # jq.quicky
+# - - - 
 
+> jq --arg type module '.type = $type' package.json > package.json.tmp && mv package.json.tmp package.json
+
+--[CWD=~/dev/node-sqlite]--[1759931042 15:44:02 Wed 08-Oct-2025 CEST]--[jdg@MacMiniM2-jdg71nl]--[hw:Mac,os:MacOS-Sequoia-15.6.1,isa:arm64]------
+> cat package.json
+{
+  "name": "sqlite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
+
+
+# - - - 
 #
 https://stedolan.github.io/jq/manual/
 
