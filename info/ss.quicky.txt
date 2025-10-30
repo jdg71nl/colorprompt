@@ -1,0 +1,8 @@
+#= ss.quicky.txt
+
+ss = socket statistics
+
+= alt to lsof
+
+#-eof
+
