@@ -13,15 +13,44 @@ SCRIPT_PATH=$(dirname $SCRIPT)
 #set -x
 #set -e
 
+check_apt_update_needed() {
+  MAX_AGE_SECONDS=$((24 * 60 * 60))
+  LISTS_DIR="/var/lib/apt/lists"
+  if [ ! -d "$LISTS_DIR" ]; then
+    #echo "# APT lists directory not found. Running apt update."
+    return 0 # Update is needed (exit code 0 means TRUE/Success)
+  fi
+
+  LAST_UPDATE_TIME=$(stat -c %Y "$LISTS_DIR")
+
+  CURRENT_TIME=$(date +%s)
+
+  AGE_SECONDS=$((CURRENT_TIME - LAST_UPDATE_TIME))
+
+#echo "Last apt update was $AGE_SECONDS seconds ago."
+
+  if [ "$AGE_SECONDS" -ge "$MAX_AGE_SECONDS" ]; then
+    #echo "Update is older than $MAX_AGE_SECONDS seconds (24 hours). Running apt update."
+    return 0 # Update is needed
+  else
+    #echo "Update is recent enough. Skipping apt update."
+    return 1 # Update is NOT needed (exit code 1 means FALSE/Failure)
+  fi
+}
+
 #
-sudo apt update
+if check_apt_update_needed; then
+  sudo apt update
+fi
+
+#
 sudo apt install -y xserver-xorg x11-xserver-utils xinit matchbox-window-manager chromium unclutter
 
 #
 sudo mkdir -pv /etc/systemd/system/getty@tty1.service.d/
 #sudo cp -av /home/dcs/prod/dcs-mcs-client/fsroot/etc/systemd/system/getty@tty1.service.d/override.conf /etc/systemd/system/getty@tty1.service.d/
 USER=$(whoami)
-cat >/etc/systemd/system/getty@tty1.service.d/override.conf <<HERE
+sudo cat >/etc/systemd/system/getty@tty1.service.d/override.conf <<HERE
 #= /etc/systemd/system/getty@tty1.service.d/override.conf
 # d251005-jdg inspri: https://tech-couch.com/post/configure-linux-debian-to-boot-into-a-fullscreen-application
 # NOTE: this first "empty-line" "ExecStart=" needs to stay there to redefine it.
@@ -82,4 +111,6 @@ grep -q bashrc.startx ~/.bashrc || echo -e "\n# inserted by setup_kiosk_mode__ge
 grep startx /etc/rc.local >/dev/null 2>&1 && echo "# WARNING: we detected a reference to 'startx' in '/etc/rc.local' -- please REMOVE this !! "
 
 #-eof
+
+
 
