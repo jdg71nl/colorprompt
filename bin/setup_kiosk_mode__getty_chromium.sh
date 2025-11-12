@@ -39,6 +39,7 @@ echo "# NOTE: we have written a default URL in file '$HOME/.kiosk-url.txt' -- Yo
 
 #
 #cp -av /home/dcs/prod/dcs-mcs-client/fsroot/home/dcs/.xinitrc /home/dcs/
+sudo rm -f $HOME/.xinitrc
 cat >$HOME/.xinitrc <<HERE
 #= \$HOME/.xinitrc
 # d251005-jdg inspri: https://tech-couch.com/post/configure-linux-debian-to-boot-into-a-fullscreen-application
