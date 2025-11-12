@@ -62,10 +62,14 @@ ExecStart=-/sbin/agetty --autologin $USER --noclear %I linux
 HERE
 
 #
-cat >$HOME/.kiosk-url.txt <<HERE
+if [ ! -f $HOME/.kiosk-url.txt ]; then
+  cat >$HOME/.kiosk-url.txt <<HERE
 http://127.0.0.1:1080/web/#/display
 HERE
-echo "# NOTE: we have written a default URL in file '$HOME/.kiosk-url.txt' -- You may want to write your own !! "
+  echo "# NOTE: we have written a default URL in file '$HOME/.kiosk-url.txt' -- You may want to write your own !! "
+else
+  echo "# NOTE: we have the file '$HOME/.kiosk-url.txt' -- You may want to check this !! "
+fi
 
 #
 #cp -av /home/dcs/prod/dcs-mcs-client/fsroot/home/dcs/.xinitrc /home/dcs/
