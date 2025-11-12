@@ -50,7 +50,8 @@ sudo apt install -y xserver-xorg x11-xserver-utils xinit matchbox-window-manager
 sudo mkdir -pv /etc/systemd/system/getty@tty1.service.d/
 #sudo cp -av /home/dcs/prod/dcs-mcs-client/fsroot/etc/systemd/system/getty@tty1.service.d/override.conf /etc/systemd/system/getty@tty1.service.d/
 USER=$(whoami)
-sudo cat >/etc/systemd/system/getty@tty1.service.d/override.conf <<HERE
+#cat >/etc/systemd/system/getty@tty1.service.d/override.conf <<HERE
+cat <<HERE | sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf >/dev/null
 #= /etc/systemd/system/getty@tty1.service.d/override.conf
 # d251005-jdg inspri: https://tech-couch.com/post/configure-linux-debian-to-boot-into-a-fullscreen-application
 # NOTE: this first "empty-line" "ExecStart=" needs to stay there to redefine it.
