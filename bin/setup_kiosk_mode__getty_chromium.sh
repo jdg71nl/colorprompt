@@ -1,13 +1,17 @@
 #!/bin/bash
 #= setup_kiosk_mode__getty_chromium.sh 
 
-#
-SCRIPT=`realpath -s $0`  # man says: "-s, --strip, --no-symlinks : don't expand symlinks"
-SCRIPT_PATH=`dirname $SCRIPT`
-cd $SCRIPT_PATH
+BASENAME=$(basename $0)
+echo "# running: $BASENAME ... "
+# SCRIPT=$(realpath -s $0)  # man says: "-s, --strip, --no-symlinks : don't expand symlinks"
+# MacOS does not do '-s' ...
+SCRIPT=$(realpath $0)
+SCRIPT_PATH=$(dirname $SCRIPT)
+# echo "# now changing-dir to:"
+# cd $SCRIPT_PATH
 
-set -x
-set -e
+#set -x
+#set -e
 
 #
 sudo apt update
@@ -31,6 +35,7 @@ HERE
 cat >$HOME/.kiosk-url.txt <<HERE
 http://127.0.0.1:1080/web/#/display
 HERE
+echo "# NOTE: we have written a default URL in file '$HOME/.kiosk-url.txt' -- You may want to write your own !! "
 
 #
 #cp -av /home/dcs/prod/dcs-mcs-client/fsroot/home/dcs/.xinitrc /home/dcs/
@@ -71,6 +76,9 @@ HERE
 
 #
 grep -q bashrc.startx ~/.bashrc || echo -e "\n# inserted by setup_kiosk_mode__getty_chromium.sh: \n[ -f ~/.bashrc.startx ] && source ~/.bashrc.startx \n" >> ~/.bashrc
+
+#
+grep startx /etc/rc.local >/dev/null 2>&1 && echo "# WARNING: we detected a reference to 'startx' in '/etc/rc.local' -- please REMOVE this !! "
 
 #-eof
 
