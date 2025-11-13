@@ -103,7 +103,7 @@ HERE
 cat >$HOME/.bashrc.startx  <<HERE
 #= \$HOME/.bashrc.startx
 # d251005-jdg inspir: https://tech-couch.com/post/configure-linux-debian-to-boot-into-a-fullscreen-application
-if [ -z "\$DISPLAY" ] && [ "\$(tty)" = "/dev/tty1" ]; then
+if [ ! -f \$HOME/.kiosk_disable ] && [ -z "\$DISPLAY" ] && [ "\$(tty)" = "/dev/tty1" ]; then
   startx
 fi
 #-eof
