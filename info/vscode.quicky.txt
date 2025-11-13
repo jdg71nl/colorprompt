@@ -1,0 +1,9 @@
+#= vscode.quicky.txt
+
+# on MacOS this is where the User (Global) settings are kept:
+> vi "./Library/Application Support/Code/User/settings.json" 
+#
+> cd ; ln -s "./Library/Application Support/Code/User/settings.json" .
+
+#-eof
+
