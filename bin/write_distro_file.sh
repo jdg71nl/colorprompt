@@ -369,7 +369,9 @@ write_distro()
 
   CHAS=""
   # the 'iconv' is needed when jq returns 'null' so to turn it into string 'null':
-  [ "$(which hostnamectl)" ] && [ "$(which jq)" ] && CHAS=$(hostnamectl --json=pretty | jq -r .Chassis | iconv -f utf-8 -t us-ascii//TRANSLIT)
+  # on old distro the --json flag is unavailable:
+  #[ "$(which hostnamectl)" ] && [ "$(which jq)" ] && CHAS=$(hostnamectl --json=pretty | jq -r .Chassis | iconv -f utf-8 -t us-ascii//TRANSLIT)
+  [ "$(which hostnamectl)" ] && [ "$(which jq)" ] && CHAS=$(hostnamectl | grep "Chassis" | awk '{print $2}' | iconv -f utf-8 -t us-ascii//TRANSLIT)
   # outputs: null | laptop | vm
   [ "$CHAS" == "null" ] && CHAS=""
   [ "$CHAS" == "laptop" ] && CHAS="phy"
