@@ -1,0 +1,225 @@
+#!/bin/bash
+#
+# jopenvpn      This shell script takes care of starting and stopping
+#               openvpn on RedHat or other chkconfig-based system.
+#
+# chkconfig: 345 24 76
+#
+# description: OpenVPN is a robust and highly flexible tunneling application that
+#              uses all of the encryption, authentication, and certification features
+#              of the OpenSSL library to securely tunnel IP networks over a single
+#              UDP port.
+#
+
+### BEGIN INIT INFO
+# Provides:          jopenvpn
+# Required-Start:    $remote_fs
+# Required-Stop:     $remote_fs
+# Should-Start:      $network $syslog
+# Should-Stop:       $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start and stop jopenvpn
+# Description:       some
+### END INIT INFO
+
+# Contributed to the OpenVPN project by
+# Douglas Keller <doug@voidstar.dyndns.org>
+# 2002.05.15
+
+#jdg
+# extract section (if started with /etc/init.d/jopenvpn-section as symbolic link)
+section=${0##*jopenvpn-}
+if [ "$section" == "$0" ]; then
+        section=""
+        echo "jdg: please start only the sections, which is symbolic links to this"
+        exit 0
+fi
+
+# Location of openvpn binary
+openvpn=""
+openvpn_locations="/usr/sbin/openvpn /usr/local/sbin/openvpn"
+for location in $openvpn_locations
+do
+  if [ -f "$location" ]
+  then
+    openvpn=$location
+  fi
+done
+
+# Lockfile
+mkdir -pv /var/lock/subsys/
+lock="/var/lock/subsys/jopenvpn-$section"
+
+# PID directory
+piddir="/var/run/jopenvpn-$section"
+mkdir -p $piddir
+
+# Our working directory
+work="/etc/openvpn/$section"
+
+# Check that binary exists
+if ! [ -f  $openvpn ]
+then
+  echo "openvpn binary not found"
+  exit 0
+fi
+
+failure() {
+        echo "OK"
+}
+
+success() {
+        echo "OK"
+}
+
+# See how we were called.
+case "$1" in
+  start)
+        echo -n $"Starting jopenvpn-$section: "
+
+        /sbin/modprobe tun >/dev/null 2>&1
+
+        # From a security perspective, I think it makes
+        # sense to remove this, and have users who need
+        # it explictly enable in their --up scripts or
+        # firewall setups.
+
+        #jdg
+        echo 1 > /proc/sys/net/ipv4/ip_forward
+
+        if [ ! -d  $piddir ]; then
+            mkdir $piddir
+        fi
+
+        if [ -f $lock ]; then
+            # we were not shut down correctly
+
+            for pidf in `/bin/ls $piddir/*.start_and_restart.pid 2>/dev/null`; do
+              if [ -s $pidf ]; then
+                kill `cat $pidf` >/dev/null 2>&1
+              fi
+              rm -f $pidf
+            done
+            rm -f $lock
+
+            for pidf in `/bin/ls $piddir/*.jopenvpn.pid 2>/dev/null`; do
+              if [ -s $pidf ]; then
+                kill `cat $pidf` >/dev/null 2>&1
+              fi
+              rm -f $pidf
+            done
+            rm -f $lock
+
+            sleep 2
+        fi
+
+        rm -f $piddir/*.pid
+        cd $work
+
+        # Start every .conf in $work and run .sh if exists
+        errors=0
+        successes=0
+        for c in `/bin/ls *.conf 2>/dev/null`; do
+            bn=${c%%.conf}
+            if [ -f "$bn.sh" ]; then
+                . $bn.sh
+            fi
+            rm -f $piddir/*.pid
+
+            /etc/init.d/start_and_restart.sh $piddir/${bn}.start_and_restart.pid $openvpn --writepid $piddir/$bn.jopenvpn.pid --config $c --cd $work &
+
+            if [ $? = 0 ]; then
+                successes=1
+            else
+                errors=1
+            fi
+        done
+
+        if [ $errors = 1 ]; then
+            failure; echo
+        else
+            success; echo
+        fi
+
+        if [ $successes = 1 ]; then
+            touch $lock
+        fi
+        ;;
+  stop)
+        echo -n $"Shutting down jopenvpn-$section: "
+
+                  #jdg
+        for pidf in `/bin/ls $piddir/*.start_and_restart.pid 2>/dev/null`; do
+          if [ -s $pidf ]; then
+            kill `cat $pidf` >/dev/null 2>&1
+          fi
+          rm -f $pidf
+        done
+
+        for pidf in `/bin/ls $piddir/*.jopenvpn.pid 2>/dev/null`; do
+          if [ -s $pidf ]; then
+            kill `cat $pidf` >/dev/null 2>&1
+          fi
+          rm -f $pidf
+        done
+
+        success; echo
+        rm -f $lock
+        ;;
+  restart)
+        $0 stop
+        sleep 2
+        $0 start
+        ;;
+  reload)
+        if [ -f $lock ]; then
+            for pidf in `/bin/ls $piddir/*.jopenvpn.pid 2>/dev/null`; do
+                if [ -s $pidf ]; then
+                    kill -HUP `cat $pidf` >/dev/null 2>&1
+                fi
+            done
+        else
+            echo "jopenvpn-$section: service not started"
+            exit 1
+        fi
+        ;;
+  reopen)
+        if [ -f $lock ]; then
+            for pidf in `/bin/ls $piddir/*.jopenvpn.pid 2>/dev/null`; do
+                if [ -s $pidf ]; then
+                    kill -USR1 `cat $pidf` >/dev/null 2>&1
+                fi
+            done
+        else
+            echo "jopenvpn-$section: service not started"
+            exit 1
+        fi
+        ;;
+  condrestart)
+        if [ -f $lock ]; then
+            $0 stop
+            # avoid race
+            sleep 2
+            $0 start
+        fi
+        ;;
+  status)
+        if [ -f $lock ]; then
+            for pidf in `/bin/ls $piddir/*.jopenvpn.pid 2>/dev/null`; do
+                if [ -s $pidf ]; then
+                    kill -USR2 `cat $pidf` >/dev/null 2>&1
+                fi
+            done
+            echo "jopenvpn-$section: USR2 signal sent [Status written to /var/log/messages ??]"
+        else
+            echo "jopenvpn-$section: service not started"
+            exit 1
+        fi
+        ;;
+  *)
+        echo "Usage: jopenvpn-$section {start|stop|restart|condrestart|reload|reopen|status}"
+        exit 1
+        ;;
+esac
+exit 0
