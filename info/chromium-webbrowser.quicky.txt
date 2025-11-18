@@ -1,0 +1,18 @@
+#
+
+# Error:
+
+> chromium
+[7068:7068:1118/223431.393562:ERROR:chrome/browser/process_singleton_posix.cc:358] The profile appears to be in use by another Chromium process (4435) on another computer (D-211-202). Chromium has locked the profile so that it doesn't get corrupted. If you are sure no other processes are using this profile, you can unlock the profile and relaunch Chromium.
+[7068:7068:1118/223431.393652:ERROR:chrome/browser/ui/views/message_box_dialog.cc:199] Unable to show message box: Chromium - The profile appears to be in use by another Chromium process (4435) on another computer (D-211-202). Chromium has locked the profile so that it doesn't get corrupted. If you are sure no other processes are using this profile, you can unlock the profile and relaunch Chromium.
+
+#( bash[PROMPT_COMMAND]: prev.cmd returned non-zero code: 21 )
+
+# Solution:
+
+>
+cd ~/.config/chromium/
+mv SingletonLock SingletonLock.moved.$(date +%s)
+
+#-eof
+
