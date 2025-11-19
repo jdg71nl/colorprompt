@@ -20,11 +20,12 @@ node -v # Should print "v24.11.1".
 # Verify npm version:
 npm -v # Should print "11.6.2".
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - .
-# next also do:
+# next also do (note: NOT as sudo !):
 #
-sudo npm i -g nodemon
+npm i -g nodemon
 #
-sudo npm i -g pm2
+npm i -g pm2
+#
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - .
 HERE
 
