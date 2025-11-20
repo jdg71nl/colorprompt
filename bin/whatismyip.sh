@@ -29,12 +29,30 @@
 # > type curl-cat 
 #curl-cat is aliased to `curl -fsL'
 #
-#
 #curl -fsL https://dgt-bv.com/whatismyip.php
 #
-echo "# > curl -fsL https://j71.nl/whatismyip.php "
-curl -fsL https://j71.nl/whatismyip.php
+# d251120-jdg: decommissioned j71.nl:
+#echo "# > curl -fsL https://j71.nl/whatismyip.php "
+#curl -fsL https://j71.nl/whatismyip.php
 #
+# d251120 find this via Gemini while asking about Miktrotik RouterOS:
+#: --[CWD=~]--[1763652243 16:24:03 Thu 20-Nov-2025 CET]--[jdg@MacMiniM2-jdg71nl]--[hw:Mac,os:MacOS-Sequoia-15.6.1,isa:arm64]------
+#: > curl https://ipinfo.io/
+#: {
+#:   "ip": "176.182.174.25",
+#:   "hostname": "176-182-174-25.abo.bbox.fr",
+#:   "city": "Jonchery-sur-Vesle",
+#:   "region": "Grand Est",
+#:   "country": "FR",
+#:   "loc": "49.2895,3.8135",
+#:   "org": "AS5410 Bouygues Telecom SA",
+#:   "postal": "51140",
+#:   "timezone": "Europe/Paris",
+#:   "readme": "https://ipinfo.io/missingauth"
+#: }
+#
+echo "# > curl https://ipinfo.io/ "
+curl https://ipinfo.io/
 #
 #-eof
 
