@@ -1,0 +1,25 @@
+#= 
+
+# d251120-jdg: successfully added on Mikrotik hEX Lite Router -- ssh/2221 port-mapping
+
+/ip firewall nat add \
+    chain=dstnat \
+    action=dst-nat \
+    protocol=tcp \
+    in-interface=ether1 \
+    dst-port=2221 \
+    to-addresses=10.235.211.201 \
+    to-ports=2221 \
+    comment="SSH 2221 Forward to RPI5 19.235.211.201 ."
+
+/ip firewall filter add \
+    chain=forward \
+    action=accept \
+    protocol=tcp \
+    in-interface=ether1 \
+    dst-address=10.235.211.201 \
+    dst-port=22 \
+    comment="Allow Forwarded SSH 2221 Traffic"
+
+#-eof
+
