@@ -1,0 +1,26 @@
+#= /etc/caddy/Caddyfile
+
+{
+  # default: see https://caddyserver.com/docs/caddyfile/options#admin
+  #admin localhost:2019
+  # above binds to ::1 , to force IPv4 do:
+  admin 127.0.0.1:2019
+}
+
+mcs-server-2.dcs-mgt.nl {
+  #
+  reverse_proxy /api/* 127.0.0.1:1080
+
+  file_server /code/56436243/ browse {
+    #root /home/dcs/prod/dcs-mcs-server/docker/data/nginx/www/code/56436243/
+    root /home/dcs/prod/dcs-mcs-server/docker/data/nginx/www/
+  }
+  file_server {
+    #root /home/dcs/prod/dcs-mcs-server/docker/data/nginx/www/
+    #root /home/dcs/prod/dcs-mcs-server/docker/data/certbot/www/web/
+    root /home/dcs/prod/dcs-mcs-server/docker/data/certbot/www/
+  }
+}
+
+#-eof
+

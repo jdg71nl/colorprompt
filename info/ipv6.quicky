@@ -1,15 +1,25 @@
 # ipv6.qiucky
 
-# d2509 disable on RPI / Ubuntu / Debian ?
+# ------+++------
+# d2509 disable on RPI 
 
 # https://askubuntu.com/questions/309461/how-to-disable-ipv6-permanently/337736#337736
 # add this section on the first line in this file:
-# vi /boot/firmware/cmdline.txt
-# ipv6.disable=1
 
+vi /boot/firmware/cmdline.txt
 
+ipv6.disable=1
 
+# ------+++------
+# d251123 diable ipv6 on Debian 13 Trixie:
 
+sudo vi /etc/default/grub
+
+GRUB_CMDLINE_LINUX="ipv6.disable=1"
+
+sudo update-grub
+
+sudo reboot
 
 # ------+++------
 # Centos: config IPv6 address on eth interface
