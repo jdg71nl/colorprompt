@@ -1,0 +1,16 @@
+#= perl-mac-locale.quicky.txt
+
+# d251126: fix Perl locale warning on Mac:
+# https://stackoverflow.com/questions/2499794/how-to-fix-a-locale-setting-warning-from-perl
+
+cat ~/.basrc
+
+# d251126: my MacOS on MacMiniM2 already knows > echo $LANG # output: en_NL.utf-8
+#export LANG=en_US.UTF-8
+# but these 2 are new:
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+#.
+
+#-eof
+
