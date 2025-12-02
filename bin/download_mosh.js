@@ -97,7 +97,8 @@ const f_nr_to_padzero_string = function (nr, digits) {
 function f_section_name_parse(section_name) {
   // const section_shortname = section_name.replace(/Project: /, "").replace(/ \([0-9]+(m|h)\)/, "");
   const section_shortname = section_name
-    .replace(/ \([0-9]+(m|h)\)/, "")
+    .replace(/^[0-9 \-]+/, "")
+    .replace(/ \([^\)]+\)/, "")
     .replace(/ /g, "-")
     .replace(/--/g, "-")
     .replace(/[^a-zA-Z0-9\-]/g, "");
