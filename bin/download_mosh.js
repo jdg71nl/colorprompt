@@ -12,8 +12,8 @@ const tilde = "---===---";
 
 // p = part , s = section , l = lecture
 // TUNS-s00---===------===---The-Ultimate-Next.js-Series.xspf
-// TUNS-s01-GS-l01---===---Getting_Started---===---Introduction.mp4
-// TUNS-s01-GS-l02--Prerequisites.mp4
+// TUNS-s01-GS-l01---===---Getting_Started---===---Introduction.${ext}
+// TUNS-s01-GS-l02--Prerequisites.${ext}
 
 // - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - .
 // imports:
@@ -110,7 +110,7 @@ function f_lecture_name_parse(lecture_name) {
   const lecture_nr = lecture_name.replace(/^([0-9]+-])/, "$1");
   const lecture_zero_nr = ("000" + ~~parseInt(lecture_nr, 10)).slice(-2);
   const lecture_shortname = lecture_name
-    .replace(/^[0-9]+\- /, "")
+    .replace(/^[0-9 \-]+/, "")
     .replace(/ /g, "-")
     .replace(/--/g, "-")
     .replace(/[^a-zA-Z0-9\-]/g, "");
@@ -164,15 +164,16 @@ async function fa_main() {
               lectures.forEach((lec) => {
                 const lecture_name = lec?.name;
                 const primary_attachment_type = lec?.primary_attachment_type;
-                if (lecture_name && primary_attachment_type === "video") {
+                if (lecture_name) {
                   lecture_counter += 1;
                   const { lecture_zero_nr, lecture_shortname } = f_lecture_name_parse(lecture_name);
                   const section_zero_nr = f_nr_to_padzero_string(section_counter, 2);
+                  const ext = primary_attachment_type === "video" ? "mp4" : "pdf";
                   let file_str = "";
                   if (lecture_counter == 1) {
-                    file_str = `${TAG}-s${section_zero_nr}-${section_tag}-l${lecture_zero_nr}${tilde}${section_shortname}${tilde}${lecture_shortname}.mp4`;
+                    file_str = `${TAG}-s${section_zero_nr}-${section_tag}-l${lecture_zero_nr}${tilde}${section_shortname}${tilde}${lecture_shortname}.${ext}`;
                   } else {
-                    file_str = `${TAG}-s${section_zero_nr}-${section_tag}-l${lecture_zero_nr}--${lecture_shortname}.mp4`;
+                    file_str = `${TAG}-s${section_zero_nr}-${section_tag}-l${lecture_zero_nr}--${lecture_shortname}.${ext}`;
                   }
                   file_list.push(file_str);
                 }
