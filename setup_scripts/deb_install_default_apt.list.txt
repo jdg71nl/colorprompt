@@ -2,7 +2,6 @@ apt-transport-https
 arping
 arp-scan
 curl
-ethtool
 fping
 git
 host
@@ -12,15 +11,14 @@ iptables
 jq
 locate
 lsof
-minicom
 mtr
 ntp
 openvpn
 rsync
+rsyslog
 sudo
 telnet
 traceroute
 vim
-watchdog
 wget
 whois
