@@ -95,9 +95,11 @@ ff ()   { echo "# bash-function, see 'type ff':";  /usr/bin/find . -iname '*'$1'
 ff2 ()  { echo "# bash-function, see 'type ff2':"; /usr/bin/find . ! -ipath '*.svn*' -iname '*'$1'*'; }
 fif ()  { echo "# bash-function, see 'type fif':"; /usr/bin/find . -xtype f -iname '*'$2'*' -print0 | xargs -0i grep -sinH "$1" "{}"; }
 fif2 () { echo "# bash-function, see 'type fif2':"; /usr/bin/find . -xtype f ! -ipath '*.svn*' -iname '*'$2'*' -print0 | xargs -0i grep -sinH "$1" "{}"; }
+fifp ()  { echo "# bash-function, see 'type fifm':"; /usr/bin/find . -path '*/node_modules/*' -prune -o -xtype f -iname '*'$2'*' -print0 | xargs -0i grep -sinH "$1" "{}"; }
 ffm ()   { echo "# bash-function, see 'type ffm':"; gfind . -iname '*'$1'*'; }
 # fifm on basis of brew: > brew install findutils
 fifm ()  { echo "# bash-function, see 'type fifm':"; gfind . -xtype f -iname '*'$2'*' -print0 | gxargs -0i grep -sinH "$1" "{}"; }
+fifmp ()  { echo "# bash-function, see 'type fifm':"; gfind . -path '*/node_modules/*' -prune -o -xtype f -iname '*'$2'*' -print0 | gxargs -0i grep -sinH "$1" "{}"; }
 # alt:
 # > brew install ffind
 # > brew install rargs
