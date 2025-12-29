@@ -106,7 +106,7 @@ fifmp ()  { echo "# bash-function, see 'type fifm':"; gfind . -path '*/node_modu
 fifm2 ()  { echo "# bash-function, see 'type fifm':"; ffind . -xtype f -iname '*'$2'*' -print0 | rargs -0 egrep -sinH "$1" "{}"; }
 fifm3 () { egrep -sinH "$1" "$2"; }
 #
-tarbase64 () { tar czf - "$@" | openssl base64 ; }
+tarbase64 () { COPYFILE_DISABLE=1 tar czf - "$@" | openssl base64 ; }
 untarbase64 () { cat | openssl base64 -d | tar xvzf - ; }
 #
 multiline2line () { cat | perl -pe "s/\s+/ /" ; }
