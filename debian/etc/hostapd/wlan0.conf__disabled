@@ -1,0 +1,24 @@
+# /etc/hostapd/wlan0.conf
+# before:
+# /etc/hostapd/hostapd.conf
+#
+# info: https://unix.stackexchange.com/questions/618635/hostapd-on-two-interfaces-two-configuration-files
+#
+bridge=br0
+interface=wlan0
+hw_mode=g
+channel=6
+#
+ssid=jdg-france-2g
+wpa_passphrase=Haar77Lem3
+#
+driver=nl80211
+country_code=NL
+macaddr_acl=0
+ignore_broadcast_ssid=0
+auth_algs=1
+wpa=2
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+#

@@ -1,0 +1,23 @@
+# /etc/hostapd/wlan1.conf
+# before:
+# /etc/hostapd/hostapd.conf
+#
+bridge=br0
+interface=wlan1
+hw_mode=a
+# jdg-note: best 5GHz channels in NL/EU (no DFS, high Power) ==> 36, 40, 44, 48
+channel=44
+#
+ssid=jdg-france-5g
+wpa_passphrase=Haar77Lem3
+#
+driver=nl80211
+country_code=NL
+macaddr_acl=0
+ignore_broadcast_ssid=0
+auth_algs=1
+wpa=2
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+#
