@@ -1,0 +1,20 @@
+#= install-go-lang-toolchain.quicky.txt
+# - - - - - - = = = - - - - - - .
+
+# d260124
+# https://go.dev/doc/install
+
+> wget https://go.dev/dl/go1.25.6.linux-arm64.tar.gz
+> rm -rf /usr/local/go && tar -C /usr/local -xzf go1.25.6.linux-arm64.tar.gz
+
+# - - - - - - = = = - - - - - - .
+# install deb pkg:
+
+> sudo apt install golang
+
+> go version
+go version go1.19.8 linux/amd64
+
+# - - - - - - = = = - - - - - - .
+#-eof
+
