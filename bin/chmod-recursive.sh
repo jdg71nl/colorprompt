@@ -15,8 +15,8 @@ EMOD=$3
 
 if [[ -z "$EMOD" ]]; then
 	DMOD="0755"
-	FMOD="0666"
-	EMOD="0777"
+	FMOD="0644"
+	EMOD="0755"
   echo "#"
 	echo "# -- no parameters given, using defaults: DMOD=$DMOD FMOD=$FMOD EMOD=$EMOD ..."
 fi
@@ -43,3 +43,4 @@ find . \( -type d -exec chmod $DMOD "{}" \; -printf "\n%p:" \) -o \
 echo "#"
 
 #-eof
+
