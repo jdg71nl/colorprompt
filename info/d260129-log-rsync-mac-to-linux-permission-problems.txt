@@ -1,0 +1,27 @@
+
+--[CWD=~/prod/www/john.de-graaff.net/webroot/code/23120425/stadsring51_shv_2025_2026_2027/files(git:master)]--[1769698883 16:01:23 Thu 29-Jan-2026 CET]--[jdg@jwww2]--[vm/3.8G,os:Debian-12/bookworm,isa:x86_64]------
+> lt Loonbeslag-2025m12--Invoned-GemAF-157e15/
+ls: cannot access 'Loonbeslag-2025m12--Invoned-GemAF-157e15/d240712-JDG-Invoned-GemAF-Parkeerbelasting.pdf': Permission denied
+ls: cannot access 'Loonbeslag-2025m12--Invoned-GemAF-157e15/d251231-JDG-RTI--salaris-spec-loonstrook--2025-12.pdf': Permission denied
+ls: cannot access 'Loonbeslag-2025m12--Invoned-GemAF-157e15/d260128t2007-JDG-RTI--email--mirjam_van_rooij_at-sign_realtimeinfra_nl--bijlage3--Invoned_incassobureau.pdf': Permission denied
+ls: cannot access 'Loonbeslag-2025m12--Invoned-GemAF-157e15/d250226-JDG-Invoned-GemAF--Akte-van-Betekening--dossier-24668154.pdf': Permission denied
+ls: cannot access 'Loonbeslag-2025m12--Invoned-GemAF-157e15/d241101-JDG-Invoned-GemAF--aankondiging-invorderingsprocedure--dossier-24668154.pdf': Permission denied
+ls: cannot access 'Loonbeslag-2025m12--Invoned-GemAF-157e15/d250331-JDG-Invoned-GemAF-Parkeerbelasting.pdf': Permission denied
+ls: cannot access 'Loonbeslag-2025m12--Invoned-GemAF-157e15/d260128t2007-JDG-RTI--email--mirjam_van_rooij_at-sign_realtimeinfra_nl--Fwd_Welzijn.pdf': Permission denied
+ls: cannot access 'Loonbeslag-2025m12--Invoned-GemAF-157e15/d251203-JDG-GGN-DWS-CAK-CJIB--Mail_van_Fam_de_Graaff_RE_incasso_Archived_On_dec_03_2025.pdf': Permission denied
+ls: cannot access 'Loonbeslag-2025m12--Invoned-GemAF-157e15/.': Permission denied
+ls: cannot access 'Loonbeslag-2025m12--Invoned-GemAF-157e15/..': Permission denied
+total 0
+-????????? ? ? ? ?            ? d260128t2007-JDG-RTI--email--mirjam_van_rooij_at-sign_realtimeinfra_nl--Fwd_Welzijn.pdf
+-????????? ? ? ? ?            ? d260128t2007-JDG-RTI--email--mirjam_van_rooij_at-sign_realtimeinfra_nl--bijlage3--Invoned_incassobureau.pdf
+-????????? ? ? ? ?            ? d251231-JDG-RTI--salaris-spec-loonstrook--2025-12.pdf
+-????????? ? ? ? ?            ? d251203-JDG-GGN-DWS-CAK-CJIB--Mail_van_Fam_de_Graaff_RE_incasso_Archived_On_dec_03_2025.pdf
+-????????? ? ? ? ?            ? d250331-JDG-Invoned-GemAF-Parkeerbelasting.pdf
+-????????? ? ? ? ?            ? d250226-JDG-Invoned-GemAF--Akte-van-Betekening--dossier-24668154.pdf
+-????????? ? ? ? ?            ? d241101-JDG-Invoned-GemAF--aankondiging-invorderingsprocedure--dossier-24668154.pdf
+-????????? ? ? ? ?            ? d240712-JDG-Invoned-GemAF-Parkeerbelasting.pdf
+d????????? ? ? ? ?            ? ../
+d????????? ? ? ? ?            ? ./
+
+#( bash[PROMPT_COMMAND]: prev.cmd returned non-zero code: 1 )
+
