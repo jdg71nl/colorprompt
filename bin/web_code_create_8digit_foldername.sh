@@ -1,6 +1,15 @@
 #!/bin/bash
 #= web_code_create_8digit_foldername.sh 
 
+# - - - - - - = = = - - - - - - .
+BASENAME=$(basename $0)
+#echo "# running: $BASENAME ... "
+# SCRIPT=$(realpath -s $0)  # man says: "-s, --strip, --no-symlinks : don't expand symlinks"  # MacOS does not do '-s' ...
+SCRIPT=$(realpath $0)
+SCRIPT_PATH=$(dirname $SCRIPT)
+cd $SCRIPT_PATH
+# - - - - - - = = = - - - - - - .
+
 rand32=$(./generate_random_number_32bits_min_0_max_4294967295.pl) 
 code8digit=$(awk -v min=10000000 -v max=99999999 -v rand32=$rand32 -v max32int=4294967295 'BEGIN{print int(min+rand32/max32int*(max-min+1))}')
 
