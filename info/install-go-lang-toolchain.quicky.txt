@@ -1,6 +1,22 @@
 #= install-go-lang-toolchain.quicky.txt
 # - - - - - - = = = - - - - - - .
 
+# d260130 install go on Mac:
+
+> brew install go
+
+--[CWD=~/colorprompt/info(git:main)]--[1769808730 22:32:10 Fri 30-Jan-2026 CET]--[jdg@MBAirM3-jdg71nl]--[hw:Mac,os:MacOS-Tahoe-26.2,isa:arm64]------
+> brew install go
+Warning: go 1.25.6 is already installed and up-to-date.
+To reinstall 1.25.6, run:
+  brew reinstall go
+
+--[CWD=~/colorprompt/info(git:main)]--[1769808741 22:32:21 Fri 30-Jan-2026 CET]--[jdg@MBAirM3-jdg71nl]--[hw:Mac,os:MacOS-Tahoe-26.2,isa:arm64]------
+> go version
+go version go1.25.6 darwin/arm64
+
+# - - - - - - = = = - - - - - - .
+
 # d260124
 # https://go.dev/doc/install
 
@@ -8,7 +24,7 @@
 > rm -rf /usr/local/go && tar -C /usr/local -xzf go1.25.6.linux-arm64.tar.gz
 
 # - - - - - - = = = - - - - - - .
-# install deb pkg:
+# Dabian: install deb pkg:
 
 > sudo apt install golang
 
