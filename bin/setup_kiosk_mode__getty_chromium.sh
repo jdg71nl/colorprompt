@@ -40,13 +40,16 @@ check_apt_update_needed() {
 
 #
 if check_apt_update_needed; then
+  echo "# we need to run: apt update ..."
   sudo apt update
 fi
 
 #
+echo "# installing apt pkgs ..."
 sudo apt install -y xserver-xorg x11-xserver-utils xinit matchbox-window-manager chromium unclutter
 
 #
+echo "# writing file for auto-login on TTY1: /etc/systemd/system/getty@tty1.service.d/override.conf "
 sudo mkdir -pv /etc/systemd/system/getty@tty1.service.d/
 #sudo cp -av /home/dcs/prod/dcs-mcs-client/fsroot/etc/systemd/system/getty@tty1.service.d/override.conf /etc/systemd/system/getty@tty1.service.d/
 USER=$(whoami)
@@ -62,6 +65,7 @@ ExecStart=-/sbin/agetty --autologin $USER --noclear %I linux
 HERE
 
 #
+echo "# writing file that specifies target URL: ~/.kiosk-url.txt "
 if [ ! -f $HOME/.kiosk-url.txt ]; then
   cat >$HOME/.kiosk-url.txt <<HERE
 http://127.0.0.1:1080/web/#/display
@@ -72,6 +76,7 @@ else
 fi
 
 #
+echo "# writing file to start X: ~/.xinitrc "
 #cp -av /home/dcs/prod/dcs-mcs-client/fsroot/home/dcs/.xinitrc /home/dcs/
 sudo rm -f $HOME/.xinitrc
 cat >$HOME/.xinitrc <<HERE
@@ -99,6 +104,7 @@ chromium --kiosk --no-first-run --incognito --noerrdialogs --disable-infobars \$
 HERE
 
 #
+echo "# writing file to auto-start: ~/.bashrc.startx "
 #cp -av /home/dcs/prod/dcs-mcs-client/fsroot/home/dcs/.bashrc.startx /home/dcs/
 cat >$HOME/.bashrc.startx  <<HERE
 #= \$HOME/.bashrc.startx
