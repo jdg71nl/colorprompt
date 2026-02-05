@@ -1,0 +1,89 @@
+#= docker--docker-compose--info.txt
+# - - - - - - = = = - - - - - - .  - - - - - - = = = - - - - - - .  - - - - - - = = = - - - - - - . 
+
+# example docker-compose--file.txt
+
+services:
+  smokeping:
+    image: lscr.io/linuxserver/smokeping:latest
+    container_name: smokeping
+    hostname: smokeping #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      #- TZ=Etc/UTC
+      - TZ=Europe/Amsterdam
+      #- MASTER_URL=http://<master-host-ip>:80/smokeping/ #optional
+      #- SHARED_SECRET=password #optional
+      #- CACHE_DIR=/tmp #optional
+    volumes:
+      - /opt/docker/run/smokeping/config:/config
+      - /opt/docker/run/smokeping/data:/data
+    ports:
+      # note: ports: external_pot:internal_port
+      - 2080:80
+    restart: unless-stopped
+  #
+#
+
+# - - - - - - = = = - - - - - - .  - - - - - - = = = - - - - - - .  - - - - - - = = = - - - - - - . 
+
+# > cat dc-down.sh 
+#!/bin/bash
+#
+BASENAME=`basename $0`
+SCRIPT=`realpath $0`             # -s, --strip, --no-symlinks : don't expand symlinks
+SCRIPT_PATH=`dirname $SCRIPT`
+# echo "SCRIPT='$SCRIPT"            # SCRIPT='/Users/jdg/dev/mern-template/deploy/docker/dc-mongo-52-up.sh
+# echo "SCRIPT_PATH='$SCRIPT_PATH"  # SCRIPT_PATH='/Users/jdg/dev/mern-template/deploy/docker
+#
+YAML_FILE="docker-compose.yaml"
+YAML_PATH="$SCRIPT_PATH/$YAML_FILE"
+#
+docker compose -f $YAML_PATH down
+#
+#-eof
+
+# - - - - - - = = = - - - - - - . 
+
+# > cat dc-reload.sh 
+#!/bin/bash
+#
+BASENAME=`basename $0`
+SCRIPT=`realpath $0`             # -s, --strip, --no-symlinks : don't expand symlinks
+SCRIPT_PATH=`dirname $SCRIPT`
+# echo "SCRIPT='$SCRIPT"            # SCRIPT='/Users/jdg/dev/mern-template/deploy/docker/dc-mongo-52-up.sh
+# echo "SCRIPT_PATH='$SCRIPT_PATH"  # SCRIPT_PATH='/Users/jdg/dev/mern-template/deploy/docker
+#cd $SCRIPT_PATH
+#
+#YAML_FILE="docker-compose.yaml"
+#YAML_PATH="$SCRIPT_PATH/$YAML_FILE"
+
+#
+docker exec smokeping pkill -f -HUP '/usr/bin/perl /usr/s?bin/smokeping(_cgi)?'
+
+#-eof
+
+# - - - - - - = = = - - - - - - . 
+
+# > cat dc-up.sh 
+#!/bin/bash
+#
+BASENAME=`basename $0`
+SCRIPT=`realpath $0`             # -s, --strip, --no-symlinks : don't expand symlinks
+SCRIPT_PATH=`dirname $SCRIPT`
+# echo "SCRIPT='$SCRIPT"            # SCRIPT='/Users/jdg/dev/mern-template/deploy/docker/dc-mongo-52-up.sh
+# echo "SCRIPT_PATH='$SCRIPT_PATH"  # SCRIPT_PATH='/Users/jdg/dev/mern-template/deploy/docker
+cd $SCRIPT_PATH
+#
+YAML_FILE="docker-compose.yaml"
+YAML_PATH="$SCRIPT_PATH/$YAML_FILE"
+#
+docker compose -f $YAML_PATH up -d 
+#
+#-eof
+
+# - - - - - - = = = - - - - - - .  - - - - - - = = = - - - - - - .  - - - - - - = = = - - - - - - . 
+# - - - - - - = = = - - - - - - . 
+#-eof
+
