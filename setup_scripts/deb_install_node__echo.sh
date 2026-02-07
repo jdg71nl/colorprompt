@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# CHECK Latest version of nvm:
+# https://github.com/nvm-sh/nvm
+# https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script
+
 cat <<HERE
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - .
 # d251118-jdg: MANUAL install steps from: https://nodejs.org/en/download
@@ -28,6 +32,12 @@ npm i -g pm2
 #
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - .
 HERE
+
+# d260206 web says: https://github.com/nvm-sh/nvm?tab=readme-ov-file
+if false; then
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+fi
 
 #-eof
 
