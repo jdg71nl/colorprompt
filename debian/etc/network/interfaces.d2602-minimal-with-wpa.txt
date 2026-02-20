@@ -1,0 +1,42 @@
+#= /etc/network/interfaces
+
+# d2602: interfaces.minimal-with-wpa.txt 
+
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+source /etc/network/interfaces.d/*
+
+# interfaces.sysetup
+
+auto lo
+iface lo inet loopback
+
+auto eth0
+allow-hotplug eth0
+iface eth0 inet dhcp
+#iface eth0 inet static
+#  address 192.168.1.1
+#  netmask 255.255.255.0
+#  broadcast 192.168.1.255
+#  gateway 192.168.1.254
+#
+#  post-up /sbin/ip route add 193.70.40.1 dev eth0
+#  post-up /sbin/ip route add default via 193.70.40.1
+#  post-up /sbin/ip route add -net 10.0.0.0/8 dev lo
+#  post-up /sbin/ip route add -net 172.16.0.0/12 dev lo  
+#  post-up /sbin/ip route add -net 192.168.0.0/16 dev lo
+#  pre-down /sbin/ip route del default via 193.70.40.1
+#  pre-down /sbin/ip route del 193.70.40.1 dev eth0
+#  dns-nameserver 213.186.33.99
+#  dns-search ovh.net
+#.
+
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+  wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+#  wpa-ssid "LB21 Password"
+#  wpa-psk "somepwd"
+#.
+
+#-eof
+

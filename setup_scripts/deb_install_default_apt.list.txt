@@ -12,7 +12,7 @@ jq
 locate
 lsof
 mtr
-ntp
+ntpsec
 openvpn
 rsync
 rsyslog
