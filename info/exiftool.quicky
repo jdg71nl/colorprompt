@@ -1,4 +1,23 @@
 # exiftool.quicky
+# - - - - - - = = = - - - - - - . 
+
+# d260221 install and use on MacOS
+
+brew install exiftool
+
+# read all
+exiftool d260219t134137zCET--JDG--film-A2-Echt-Dicht--IMG_6568.MOV.mp4
+
+# read one
+exiftool -CreationDate d260219t134137zCET--JDG--film-A2-Echt-Dicht--IMG_6568.MOV
+
+# write one
+exiftool '-CreationDate=2026:02:19 13:41:27+01:00' d260219t134137zCET--JDG--film-A2-Echt-Dicht--IMG_6568.MOV.mp4.jpg
+
+# read one
+exiftool -CreationDate d260219t134137zCET--JDG--film-A2-Echt-Dicht--IMG_6568.MOV.mp4.jpg
+
+# - - - - - - = = = - - - - - - . 
 
 # get exiftool (win/mac binary, also perl module):
 # http://owl.phy.queensu.ca/~phil/exiftool/exiftool_pod.html
@@ -13,4 +32,6 @@
 
 # print all files with timestamp in current dir:
 exiftool -p '$filename has date $dateTimeOriginal' -q -f .
+
+#-eof
 
