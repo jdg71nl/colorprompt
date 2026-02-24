@@ -21,14 +21,15 @@ go version go1.25.6 darwin/arm64
 # https://go.dev/doc/install
 
 > sudo apt purge golang
+> sudo -i
 > wget https://go.dev/dl/go1.25.6.linux-arm64.tar.gz
 > rm -rf /usr/local/go && tar -C /usr/local -xzf go1.25.6.linux-arm64.tar.gz
 
-# add in $HOME/.profile or /etc/profile (for a system-wide installation):
+# for users:root,jdg add in $HOME/.profile or /etc/profile (for a system-wide installation):
 export PATH=$PATH:/usr/local/go/bin
 
 # - - - - - - = = = - - - - - - .
-# Dabian: install deb pkg:
+# Dabian: install deb pkg (DON'T -- better install recent version above)
 
 > sudo apt install golang
 
