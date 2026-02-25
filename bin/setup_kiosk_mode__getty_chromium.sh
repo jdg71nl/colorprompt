@@ -98,7 +98,12 @@ unclutter -idle 1 -root &
 # chromium-browser --kiosk --noerrdialogs --disable-infobars http://127.0.0.1:1080/web/#/display
 # chromium --kiosk --no-first-run --incognito --noerrdialogs --disable-infobars http://127.0.0.1:1080/web/#/display
 KIOSK_URL=\$(cat \$HOME/.kiosk-url.txt)
-chromium --kiosk --no-first-run --incognito --noerrdialogs --disable-infobars \$KIOSK_URL
+
+while : 
+do
+  chromium --kiosk --no-first-run --incognito --noerrdialogs --disable-infobars \$KIOSK_URL
+  sleep 1
+done
 
 #-eof
 HERE
