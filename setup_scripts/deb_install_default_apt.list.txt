@@ -6,7 +6,7 @@ fping
 git
 host
 htop
-inetutils-telnet
+#inetutils-telnet
 iptables
 jq
 locate
@@ -15,9 +15,9 @@ mtr
 ntpsec
 openvpn
 rsync
-rsyslog
+#rsyslog
 sudo
-telnet
+#telnet
 traceroute
 vim
 wget

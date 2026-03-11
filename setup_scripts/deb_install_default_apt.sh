@@ -61,29 +61,35 @@ else
   echo "# adding specific package for: \"other\" distro's ..."
   ADD_PKG_LINES="netcat"
 fi
-# d241001 disabled:
+# d241001 disabled: !!!! <======-------------------
 ADD_PKG_LINES=""
 
 
 FILE="deb_install_default_apt.list.txt"
 #
-PKG_STRING="$(echo -e $ADD_PKG_LINES | cat $FILE - | sort | tr '\n' ' ')"
+#PKG_STRING="$(echo -e $ADD_PKG_LINES | cat $FILE - | sort | tr '\n' ' ')"
+PKG_STRING="$(cat $FILE - | grep -v '^#' | sort | tr '\n' ' ')"
 #echo "# PKG_STRING=\"$PKG_STRING\""
 #
 echo "# apt install -y $PKG_STRING "
 apt install -y $PKG_STRING 
 #
 
+echo
+echo "# optionally add these manually: "
+cat <<HERE 
 # for: xeyes
-# apt install -y x11-apps x11-utils 
+apt install -y x11-apps x11-utils 
+# for dev:
+apt install -y build-essential 
+apt install -y build-essential dkms bc raspberrypi-kernel-headers
 #
-# apt install -y build-essential 
-# apt install -y build-essential dkms bc raspberrypi-kernel-headers
+apt install -y lshw hwinfo inxi
 #
-# apt install -y lshw hwinfo inxi
-#
-# apt install -y hostapd isc-dhcp-server dnsproxy
-# apt install -y hostapd isc-dhcp-server dnsmasq-base
+apt install -y hostapd isc-dhcp-server dnsproxy
+apt install -y hostapd isc-dhcp-server dnsmasq-base
+
+HERE
 
 exit 0
 
