@@ -48,19 +48,19 @@ fi
 
 ADD_PKG_LINES=""
 
-#JINFO_OS="Debian"
-#JINFO_VERSION="12"
-#
-if [ "$JINFO_OS" = "Ubuntu" ]; then
-  echo "# adding specific package for: Ubuntu ..."
-  ADD_PKG_LINES="netcat-openbsd"
-elif [ "$JINFO_OS" = "Debian" -a "$JINFO_VERSION" = "12" ]; then
-  echo "# adding specific package for: Debian 12 ..."
-  ADD_PKG_LINES="netcat-openbsd"
-else
-  echo "# adding specific package for: \"other\" distro's ..."
-  ADD_PKG_LINES="netcat"
-fi
+#: #JINFO_OS="Debian"
+#: #JINFO_VERSION="12"
+#: #
+#: if [ "$JINFO_OS" = "Ubuntu" ]; then
+#:   echo "# adding specific package for: Ubuntu ..."
+#:   ADD_PKG_LINES="netcat-openbsd"
+#: elif [ "$JINFO_OS" = "Debian" -a "$JINFO_VERSION" = "12" ]; then
+#:   echo "# adding specific package for: Debian 12 ..."
+#:   ADD_PKG_LINES="netcat-openbsd"
+#: else
+#:   echo "# adding specific package for: \"other\" distro's ..."
+#:   ADD_PKG_LINES="netcat"
+#: fi
 # d241001 disabled: !!!! <======-------------------
 ADD_PKG_LINES=""
 
@@ -68,10 +68,10 @@ ADD_PKG_LINES=""
 FILE="deb_install_default_apt.list.txt"
 #
 #PKG_STRING="$(echo -e $ADD_PKG_LINES | cat $FILE - | sort | tr '\n' ' ')"
-PKG_STRING="$(cat $FILE - | grep -v '^#' | sort | tr '\n' ' ')"
-#echo "# PKG_STRING=\"$PKG_STRING\""
+PKG_STRING="$(cat $FILE | grep -v '^#' | sort | tr '\n' ' ')"
+echo "# PKG_STRING=\"$PKG_STRING\""
 #
-echo "# apt install -y $PKG_STRING "
+echo "# > apt install -y $PKG_STRING "
 apt install -y $PKG_STRING 
 #
 
