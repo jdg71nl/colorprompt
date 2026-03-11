@@ -64,7 +64,8 @@ echo "# "
 echo "# - - - - - - = = = - - - - - - "
 echo "# Enabling HDMI hotplug ..."
 echo "# > set_config_var hdmi_force_hotplug 1 $CONFIG "
-set_config_var hdmi_force_hotplug 1 $CONFIG
+#d260311-jdg: hdmi_force_hotplug is now legacy, see: https://www.raspberrypi.com/documentation/computers/legacy_config_txt.html#legacy-options
+#set_config_var hdmi_force_hotplug 1 $CONFIG
 echo "# done."
 echo "# "
 
