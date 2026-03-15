@@ -1,0 +1,34 @@
+#= docker.quicky.txt
+# - - - - - - = = = - - - - - - . 
+
+# ways to make a Docker container run indefinitely (so that you can debug)
+
+sleep infinity
+
+tail -f /dev/null
+
+while true; do echo "# while true; do sleep 1; done ..." ; sleep 1 ; done
+
+# - - - - - - = = = - - - - - - . 
+# https://stackoverflow.com/questions/10797835/while-vs-while-true
+while :
+# vs
+while true
+# https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html
+#
+> i=0; time while true; do ((i++>100000)) && break; done
+
+real    0m0.128s
+user    0m0.128s
+sys     0m0.000s
+
+> i=0; time while :; do ((i++>100000)) && break; done
+
+real    0m0.120s
+user    0m0.120s
+sys     0m0.000s
+#.
+
+# - - - - - - = = = - - - - - - . 
+#-eof
+
