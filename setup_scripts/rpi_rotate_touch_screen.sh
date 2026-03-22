@@ -30,7 +30,12 @@ fi
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - .
 #
 # my statements here ...
-#
+
+cat <<HERE
+
+# see: https://www.raspberrypi.com/documentation/accessories/display.html
+
+HERE
 #
 exit 0
 #
