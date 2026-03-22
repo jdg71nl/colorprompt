@@ -31,8 +31,8 @@
 BASENAME=`basename $0`
 usage() {
   cat <<HERE
-
-# usage: $BASENAME <tag_or_facility> <syslog_level> the rest of this line is the message
+#:
+Usage: $BASENAME <tag_or_facility> <syslog_level> the rest of this line is the message
 
 - where <tag_or_facility> is a required term with _underscore between words (no spaces)
 - where <syslog_level> is one or part of the following (no spaces), like 'info':
@@ -46,7 +46,10 @@ notice________5
 informational_6
 debug_________7
 
-It will append a SYSLOG-like text-line to the file: \$HOME/jclog.txt
+Will append a SYSLOG-like text-line to the file: \$HOME/jclog.txt
+
+Typical: $BASENAME  my_script_name  error|warn|notice|info|debug  The rest of this line is the message.
+#.
 HERE
 }
 
@@ -62,11 +65,10 @@ MESSAGE="$@"
 dSTAMP=$(date +d%y%m%dt%H%M%Sz%Z)
 uSTAMP=$(date +%s)
 
-LINE=":jcl- $uSTAMP/$dSTAMP - $TAG - $LEVEL - $MESSAGE -."
+LINE=":jcl- $uSTAMP/$dSTAMP - [$TAG] - [$LEVEL] - $MESSAGE -."
 # echo "# LINE = '$LINE' "
 
 JCLOG="jclog.txt"
-
 echo "$LINE" >> $HOME/$JCLOG
 
 # - - - - - - = = = - - - - - - . 
