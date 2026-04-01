@@ -48,6 +48,12 @@ SCRIPT_PATH=$(dirname $SCRIPT)
 # cd $SCRIPT_PATH
 # pwd
 
+# DATE_TAG=$(date +d%y%m%dt%H%M%S)
+# echo "# > DATE_TAG=\$(date +d%y%m%dt%H%M%S)"
+
+# - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
+which curl >/dev/null || (echo "# Error: 'curl' is not installed. exit(1) " && exit 1)
+
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
 #: MY_UID=$(id -u)
 #: if [ $MY_UID != 0 ]; then
@@ -70,6 +76,9 @@ usage() {
 if [[ $# < 2 ]]; then
   usage
 fi
+
+# - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
+echo_stderr() { echo "$@" 1>&2; }
 
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
 #: tmp_dir="$(mktemp -d)"
