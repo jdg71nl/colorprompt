@@ -52,6 +52,48 @@ SCRIPT_PATH=$(dirname $SCRIPT)
 # echo "# > DATE_TAG=\$(date +d%y%m%dt%H%M%S)"
 
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
+# Note: on redir stdout/stderr:
+
+# howto redir stdout to stderr (note: the '1>&2' part needs to be at the END)
+# > echo "some" 1>&2
+
+# howto redir both stdout and stderr (note: the '2>&1' part needs to be AFTER the '1>' part!)
+# > cmd 1> /dev/null 2>&1
+# shorthand to a single &> operator
+# > cmd &> /dev/null
+
+echo_stderr() { 
+  STR="$*"
+  [ -z "$STR" ] && STR="<empty>"
+
+  echo "$STR" 1>&2
+
+  # Typical: /Users/jdg/opensyssetup/bin/jclog.sh  my_script_name  error|warn|notice|info|debug  The rest of this line is the message.
+  /Users/jdg/opensyssetup/bin/jclog.sh  template  info  "$STR"
+}
+
+# - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
+# Examples how to run command in subshell, and capture stdout and exit_code / Exit Status:
+
+# https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html
+
+# https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i
+#
+# example how to capture both stdout and RC with 'set -e':
+# > set -e
+# > exit_code=0
+# > OUTPUT="$(my_command 2>&1)" || exit_code=$?
+#
+# example how to capture both stdout and RC without 'set -e':
+# > OUTPUT="$(my_command 2>&1)"
+# > exit_code=$?
+
+echo "# > STD_OUT=\"\$(echo \"hello world\" 2>&1 && exit 42)\" ; EXIT_CODE=\$? ";
+STD_OUT="$(echo "hello world" 2>&1 && exit 42)" ; EXIT_CODE=$?
+echo "# EXIT_CODE = '$EXIT_CODE' , STD_OUT = '$STD_OUT'"
+
+# - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
+# check required tools: (Note: in "Mac Automator bash shell" which does not exist(?))
 which curl >/dev/null || (echo "# Error: 'curl' is not installed. exit(1) " && exit 1)
 
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
