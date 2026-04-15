@@ -1,5 +1,14 @@
 # openvpn.quicky
 
+# - - - - - - = = = - - - - - - . 
+# - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
+
+# d260415 about MTU and/or MSS -- https://community.openvpn.net/MTU%20and%20Fragments
+
+# best is a, then b:
+a) tun-mtu 1400
+b) mssfix 1400
+
 # ---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++-----
 ## static-key tunnel:
 
