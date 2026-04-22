@@ -1,0 +1,58 @@
+#= linux_ethernet_wifi_usb-issues.txt
+
+# d260422
+
+https://www.draisberghof.de/usb_modeswitch/
+
+# some USB adapters present themselves as CDROM:
+lt /dev/sr0
+
+> lsusb 
+Bus 002 Device 002: ID 2357:8151 TP-Link USB 10/100/1000 LAN
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 008: ID 2357:011e TP-Link AC600 wireless Realtek RTL8811AU [Archer T2U Nano]
+Bus 001 Device 007: ID 2e8a:0003 Raspberry Pi RP2 Boot
+Bus 001 Device 002: ID 2109:3431 VIA Labs, Inc. Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+
+
+> sudo usb_modeswitch -v 2357 -p 8151 -K
+Look for default devices ...
+ Found devices in default mode (1)
+Access device 002 on bus 002
+Get the current device configuration ...
+Current configuration number is 1
+Use interface number 0
+ with class 8
+Use endpoints 0x05 (out) and 0x84 (in)
+Sending standard EJECT sequence
+Looking for active drivers ...
+ OK, driver detached
+Set up interface 0
+Use endpoint 0x05 for message sending ...
+Trying to send message 1 to endpoint 0x05 ...
+ OK, message successfully sent
+Read the response to message 1 (CSW) ...
+ Response successfully read (13 bytes), status 0
+Trying to send message 2 to endpoint 0x05 ...
+ OK, message successfully sent
+Read the response to message 2 (CSW) ...
+ Response successfully read (13 bytes), status 0
+Trying to send message 3 to endpoint 0x05 ...
+ OK, message successfully sent
+Read the response to message 3 (CSW) ...
+ Response successfully read (13 bytes), status 0
+Trying to send message 4 to endpoint 0x05 ...
+ OK, message successfully sent
+Read the response to message 4 (CSW) ...
+ Response successfully read (13 bytes), status 0
+Reset response endpoint 0x84
+Reset message endpoint 0x05
+-> Run lsusb to note any changes. Bye!
+
+
+> lt /dev/sr0
+ls: cannot access '/dev/sr0': No such file or directory
+
+#-eof
+
