@@ -97,6 +97,14 @@ net.ipv4.ip_forward=1
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf 
 echo 1 > /proc/sys/net/ipv4/ip_forward
 
+# d260410 new on Debian 13 Trixie:
+cat <<HERE >>/etc/sysctl.d/sysctl.conf
+
+net.ipv4.ip_forward=1
+net.ipv6.conf.all.forwarding=1
+
+HERE
+
 # ---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++---+++-----
 # howto update etch to lenny (dist-upgrade):
 
