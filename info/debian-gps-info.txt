@@ -1,0 +1,26 @@
+#= debian-gps-info.txt
+
+# - - - - - - = = = - - - - - - .
+# d260503: setup GPS on: Dragino-Lora-GPS--SX127X-GPS-HAT
+
+# NOTE: on modern debian (13:trixie): below dtoverlay/cmdline/etc. is not needed
+# only this:
+
+> sudo apt install gpsd gpsd-clients
+
+> cat /etc/default/gpsd
+#: d260503-jdg
+#DEVICES=""
+DEVICES="/dev/ttyS0"
+#USBAUTO="true"
+USBAUTO="false"
+#.
+
+# and MAYBE this (but that should be good after: raspi-config ...)
+> sudo systemctl stop serial-getty@ttyS0.service
+> sudo systemctl disable serial-getty@ttyS0.service
+
+# - - - - - - = = = - - - - - - .
+
+#-eof
+
