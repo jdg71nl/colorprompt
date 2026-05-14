@@ -1,4 +1,4 @@
 #!/bin/sh
-lbu commit -d $*
+sudo lbu commit -d -v $*
 #-eof
 
