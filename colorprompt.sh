@@ -88,6 +88,7 @@ alias curl-save="curl -fsLO"
 # https://superuser.com/questions/1251360/messed-layout-in-htop
 # "I solved this problem by adding an alias for htop in ~/.bashrc: alias htop='TERM=xterm-color htop' "
 alias htop='TERM=xterm-color htop'
+alias cp_parents='cp --parents'
 #
 # - - -: Function
 psg () { echo "# (bash-func) ps aux | egrep \"^USER|$1\" "; ps aux | egrep "^USER|$1"; }
