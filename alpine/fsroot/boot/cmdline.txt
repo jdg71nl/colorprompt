@@ -1,0 +1,1 @@
+root=UUID=1deb66f7-bb13-4338-a88d-ee45f58db846 modules=sd-mod,usb-storage,ext4 rootfstype=ext4

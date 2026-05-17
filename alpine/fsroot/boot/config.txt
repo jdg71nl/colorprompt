@@ -1,0 +1,19 @@
+# do not modify this file as it will be overwritten on upgrade.
+# create and/or modify usercfg.txt instead.
+# https://www.raspberrypi.com/documentation/computers/config_txt.html
+#
+
+kernel=vmlinuz-rpi
+initramfs initramfs-rpi
+arm_64bit=0
+include usercfg.txt
+
+# d260515-jdg: enable I2C on RPI:
+dtparam=i2c_arm=on
+dtparam=i2c1=on
+#dtparam=i2c_baudrate=100000
+dtparam=i2c_arm_baudrate=10000
+
+
+#-eof
+

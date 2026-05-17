@@ -1,0 +1,71 @@
+#= alpine-setup.quicky.txt 
+
+#: d260517-jdg: 
+- use image from rpi-imager: other-os, alpine
+- run: setup-alpine
+-- net choose: eth0 (also wlan0?, not wlan0 alone)
+-- time: busybox (change later)
+-- disk: choose mmcblk0, install 'sys'
+- reboot
+#.
+
+#: install packages:
+su -  # (sudo is not installed yet)
+vi /etc/apk/repositories  # uncomment line with 'community', e.g. http://mirrors.ircam.fr/pub/alpine/v3.23/community 
+apk update
+apk add bash ca-certificates ca-certificates-bundle curl file git htop i2c-tools jansson jq less linux-rpi lsb-release-minimal lsof mosquitto-clients musl-locales ntpsec openssh openvpn perl raspberrypi-bootloader raspberrypi-bootlo
+ader-common shadow strace sudo vim vim-common zlib zstd-libs  
+reboot
+#.
+
+#: setup colorprompt, bash and sudo
+# (as user: jdg):
+curl https://j71.nl/cpih | bash 
+su -
+curl https://j71.nl/cpih | bash
+vi /etc/passwd  # change /bin/sh to /bin/bash for users: root and jdg
+# (do for both users: root, jdg):
+cat <<HERE > .bash_profile
+#
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+#-eof
+HERE
+# (re-login) (do as user: root)
+cp -av ~/colorprompt/debian/etc/sudoers.d/jdg-sudoers-nopasswd-chmod440 /etc/sudoers.d/
+#.
+
+#: now we change busybox-"ntpd" with ntpsec
+apk info --who-owns /etc/init.d/ntpd  # gives: /etc/init.d/ntpd is owned by busybox-openrc-1.37.0-r30
+rc-service ntpd stop
+rc-update del ntpd default
+rc-update add ntpsec default
+rc-service ntpsec start
+rc-status default  # gives list of services
+#.
+
+#: setup i2c
+sudo vi /boot/config.txt  # add: dtparam=i2c_arm=on  dtparam=i2c1=on  (optional?) dtparam=i2c_arm_baudrate=10000
+sudo vi /etc/modules      # add: i2c-dev  i2c-bcm2708
+# (reboot)
+sudo i2cdetect -y 1  # should give address of some i2c device
+#.
+
+#: setup jmoon
+print_cmd__jmgc.sh
+# these don't work (?!?):
+#rc-update add jopenvpn-jmoon-gwclient default
+#rc-service jopenvpn-jmoon-gwclient start
+# instead:
+su -
+cd /etc/openvpn/
+ln -s jmoon-gwclient/* .
+ln -s jmoon-gwclient.conf openvpn.conf
+rc-update add openvpn default
+rc-service openvpn start
+rc-status default  # should list: openvpn
+#.
+
+#-eof
+
