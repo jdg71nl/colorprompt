@@ -1,0 +1,157 @@
+#= rtc.quicky.txt
+
+# apparently on Debian13/Trixie we need to -extra package to get hwclock bin:
+> sudo apt install util-linux-extra
+
+> i2cdetect -y 1
+
+> sudo /usr/sbin/hwclock --verbose -r
+hwclock from util-linux 2.41
+System Time: 1779123413.136013
+Trying to open: /dev/rtc0
+Using the rtc interface to the clock.
+Assuming hardware clock is kept in UTC time.
+Waiting for clock tick...
+ioctl(4, RTC_UIE_ON, 0): Invalid argument
+Waiting in loop for time from /dev/rtc0 to change
+...got clock tick
+Time read from Hardware Clock: 2026/05/18 16:56:54
+Hw clock time : 2026/05/18 16:56:54 = 1779123414 seconds since 1969
+Time since last adjustment is 1779123414 seconds
+Calculated Hardware Clock drift is 0.000000 seconds
+2026-05-18 18:56:53.138028+02:00
+
+--[CWD=~]--[1779123414 18:56:54 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> cat /proc/driver/rtc
+rtc_time        : 16:57:36
+rtc_date        : 2026-05-18
+24hr            : yes
+
+--[CWD=~]--[1779123456 18:57:36 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> cat /boot/firmware/config.txt | tail
+#: d260518-jdg:
+dtparam=i2c1=on
+dtparam=i2c_arm=on
+dtoverlay=i2c-rtc,ds3231
+#dtoverlay=i2c-rtc,ds3231,ds3231m
+#dtoverlay=i2c-rtc,ds1307
+#.
+
+#-eof
+
+--[CWD=~]--[1779123468 18:57:48 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> cat /proc/driver/rtc
+rtc_time        : 16:58:20
+rtc_date        : 2026-05-18
+24hr            : yes
+
+# note: the UU address means to kernel is using it now:
+--[CWD=~]--[1779123579 18:59:39 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> i2cdetect -y 1
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:                         -- -- -- -- -- -- -- --
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+60: -- -- -- -- -- -- -- -- UU -- -- -- -- -- -- --
+70: -- -- -- -- -- -- -- --
+
+# note: the 68 address means to kernel has not used it (yet):
+> i2cdetect -y 1
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:                         -- -- -- -- -- -- -- --
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+60: -- -- -- -- -- -- -- -- 68 -- -- -- -- -- -- --
+70: -- -- -- -- -- -- -- --
+
+#: check 
+> echo 1-0068 | sudo tee /sys/bus/i2c/drivers/rtc-ds1307/unbind
+1-0068
+#
+--[CWD=~]--[1779124615 19:16:55 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> sudo i2cget -y 1 0x68 0x10
+0x00
+#
+--[CWD=~]--[1779124619 19:16:59 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> echo 1-0068 | sudo tee /sys/bus/i2c/drivers/rtc-ds1307/bind
+1-0068
+#.
+
+# check if file exists:
+--[CWD=~]--[1779124624 19:17:04 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> ls /sys/class/hwmon/hwmon*/temp1_input
+/sys/class/hwmon/hwmon0/temp1_input  /sys/class/hwmon/hwmon2/temp1_input
+#
+# - Exists: You have a DS3231 or DS3231M.
+# - Doesn't exist: You likely have a DS1307.
+
+# get temp:
+--[CWD=~]--[1779124767 19:19:27 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> cat /sys/class/hwmon/hwmon0/temp1_input
+40242
+#
+--[CWD=~]--[1779124767 19:19:27 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> cat /sys/class/hwmon/hwmon2/temp1_input
+21000
+#
+# - Standard DS3231: Has a resolution of 0.25°C. The output should end in .00, .25, .50, or .75 (after you divide the millidegree output by 1000).
+# - DS3231M: Has a lower resolution of 1°C. The output will almost always end in .000 (e.g., 26000 for 26°C).
+
+# d260518: Q for Gemini:
+How does the Linux kernel / system use this RTC chip ?
+Does it read the HW time at boot automatically ?
+I don't remember that I have made a config for that ...
+And when the clock is adjusted (disciplined) by NTP or the internal GSP clock, is that new time automatically saved in the hwclock ?
+#
+# A:
+It feels like magic, but there is a very specific sequence of handshakes happening behind the scenes. Because you added that dtoverlay line earlier, you gave the kernel the "map" it needed to automate everything.
+.
+The Kernel Stage: Very early in the boot process (around the 10-second mark in your dmesg), the kernel loads the rtc-ds1307 driver. Because of your dtoverlay, the kernel knows to look at I2C address 0x68. It immediately reads the time and sets the System Clock (the software clock) to match the Hardware Clock.
+.
+The Systemd Stage: Later, systemd-timesyncd or hwclock.service runs. It checks if the RTC is available and ensures the system’s timezone and epoch are correctly applied.
+.
+Does NTP/GPS automatically save to the RTC?
+Yes, but with a catch. Linux uses something called "11-minute mode." When your system clock is "disciplined" (meaning it is synchronized to an accurate external source like NTP or a GPS PPS signal), the kernel sets a status flag. Every 11 minutes, the kernel will automatically copy the precise System Time back into the Hardware Clock (the DS3231).
+.
+Pro Tip: The "Sync" command
+If you've just made a large manual change to the time and don't want to wait 11 minutes for the kernel to do it, you can force the update yourself:
+Bash
+> sudo hwclock -w
+(Think of this as "Save to Disk" but for time.)
+#.
+
+#:  
+> sudo apt install adjtimex
+--[CWD=~]--[1779125255 19:27:35 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> adjtimex --print
+         mode: 0
+       offset: 53093
+    frequency: -179778
+     maxerror: 260158
+     esterror: 5873
+       status: 8193
+time_constant: 8
+    precision: 1
+    tolerance: 32768000
+         tick: 10000
+     raw time:  1779125258s 667419101ns = 1779125258.667419101
+
+--[CWD=~]--[1779125290 19:28:10 Mon 18-May-2026 CEST]--[jdg@j-pi-3b-gps]--[hw:RPI3b-1.2/1G,os:Debian-13/trixie,isa:aarch64]------
+> timedatectl status
+               Local time: Mon 2026-05-18 19:28:11 CEST
+           Universal time: Mon 2026-05-18 17:28:11 UTC
+                 RTC time: Mon 2026-05-18 17:28:11
+                Time zone: Europe/Amsterdam (CEST, +0200)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+#.
+
+#-eof
+
