@@ -1,4 +1,4 @@
-#= colorprompt/colorprompt.sh
+#/= colorprompt/colorprompt.sh
 #
 /usr/bin/logger "Starting colorprompt/colorprompt.sh as user '$USER'"
 #
@@ -106,6 +106,7 @@ fifmp ()  { echo "# bash-function, see 'type fifm':"; gfind . -path '*/node_modu
 # > brew install rargs
 fifm2 ()  { echo "# bash-function, see 'type fifm':"; ffind . -xtype f -iname '*'$2'*' -print0 | rargs -0 egrep -sinH "$1" "{}"; }
 fifm3 () { egrep -sinH "$1" "$2"; }
+fnm () { echo "# (bash-func) find . | grep -v 'node_modules' "; find . | grep -v 'node_modules' ; }
 #
 tarbase64 () { COPYFILE_DISABLE=1 tar czf - "$@" | openssl base64 ; }
 untarbase64 () { cat | openssl base64 -d | tar xvzf - ; }
