@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-#= smartback-checkin.pl
+#= smartdump-checkin.pl
 
 use strict;
 use warnings;
@@ -15,10 +15,10 @@ use Cwd 'abs_path'; # also resolves symlinks
 
 my $basename = basename(abs_path($0)) ; # only name, abs_path resolves symlinks
 
-if ($> != 0) { # $> is $EUID
-	print "$basename: skipped because not-root\n";
-	exit;
-}
+#if ($> != 0) { # $> is $EUID
+#	print "$basename: skipped because not-root\n";
+#	exit;
+#}
 
 #qx"logger $basename started";
 #my $basedir = dirname(abs_path($0)); # without trailing slash
@@ -26,7 +26,7 @@ if ($> != 0) { # $> is $EUID
 #my $sysbackdir = "/var/syssetup/thissystem/root";
 #print getcwd() . "\n";
 
-my $sources = "/etc/smartback/sources.txt" ;
+my $list = "~/.config/smartdump/sources.txt" ;
 
 #print "$basename:\n";
 
@@ -43,14 +43,14 @@ sub checkin {
 	if (-d $absfile) {
 		#print "$basename: directory skipped: '$absfile' \n";
 		#print "skipped: $absfile is a directory (you can use 'find -type f | $basename -')\n";
-		system "echo \"$absfile\/\" >> $sources";
+		system "echo \"$absfile\/\" >> $list";
 		print "$basename: checked in directory \"$absfile\/\" \n";
 	} elsif (not -f $absfile) {
 		print "$basename: non-regular file skipped: '$absfile' \n";
 		#print "skipped: $absfile is not a regular file\n";
 	} else {
 		#system "find \"$absfile\" -print0 | cpio -p0dum --quiet $sysbackdir";
-		system "echo \"$absfile\" >> $sources";
+		system "echo \"$absfile\" >> $list";
 		print "$basename: checked in file \"$absfile\" \n";
 	}
 }
@@ -66,8 +66,7 @@ if (exists $ARGV[0] and $ARGV[0] eq '-') {
 	}
 }
 
-# system "_smartback-sortuniq.sh $sources"
-system "cat $sources | sort | uniq | grep -v '^#' > $sources.tmp && cat $sources.tmp > $sources && rm $sources.tmp"
+system "~/colorprompt/bin/smartdump/_smartdump-sortuniq.sh $list"
 
-#-eof
+#
 

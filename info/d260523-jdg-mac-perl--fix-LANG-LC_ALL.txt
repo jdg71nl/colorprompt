@@ -1,0 +1,35 @@
+#= d260523-jdg-mac-perl--fix-LANG-LC_ALL.txt
+
+> cat ~/.bash_profile 
+# d260523 Gemini says that Perl on CLI wants this:
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+#.
+
+# before:
+
+--[CWD=~/privatesyssetup/bin/smartdump(git:master)]--[1779531589 12:19:49 Sat 23-May-2026 CEST]--[jdg@MBAirM3-jdg71nl]--[hw:Mac,os:MacOS-Tahoe-26.5,isa:arm64]------
+> locale
+LANG="en_NL.utf-8"
+LC_COLLATE="C"
+LC_CTYPE="C"
+LC_MESSAGES="C"
+LC_MONETARY="C"
+LC_NUMERIC="C"
+LC_TIME="C"
+LC_ALL=
+
+# after:
+
+--[CWD=~]--[1779531629 12:20:29 Sat 23-May-2026 CEST]--[jdg@MBAirM3-jdg71nl]--[hw:Mac,os:MacOS-Tahoe-26.5,isa:arm64]------
+> locale
+LANG="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_CTYPE="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_ALL="en_US.UTF-8"
+
+#-eof

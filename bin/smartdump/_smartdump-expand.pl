@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-#= _smartback-expand.pl
+#= _smartdump-expand.pl
 
 use strict;
 #use warnings;
