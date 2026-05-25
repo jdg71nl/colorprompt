@@ -2,7 +2,7 @@
 #= create_bash_profile_rc.sh 
 
 cd
-if [ ! grep -q bashrc .bash_profile ] ; then
+if ! grep -q bashrc .bash_profile ; then
   cat <<HERE >> .bash_profile
 #= .bash_profile
 if [ -f ~/.bashrc ]; then
