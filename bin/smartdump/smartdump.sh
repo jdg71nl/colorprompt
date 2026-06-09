@@ -75,9 +75,10 @@ RSYNC_SSH="ssh -p $RSYNC_PORT"
 echo "# - - - "
 echo "$0: rsyncing ... " 
 
-echo "rsync -v -rtlz --delete --delete-excluded --include-from=$INCL_FILE -e \"$RSYNC_SSH\" / $RSYNC_USER@$RSYNC_TARGET:$RSYNC_DIR/$CLIENT_NAME/ "
-echo "rsync -v -rtlz --include-from=$INCL_FILE -e \"$RSYNC_SSH\" / $RSYNC_USER@$RSYNC_TARGET:$RSYNC_DIR/$CLIENT_NAME/ "
-      rsync -v -rtlz --include-from=$INCL_FILE -e  "$RSYNC_SSH"  / $RSYNC_USER@$RSYNC_TARGET:$RSYNC_DIR/$CLIENT_NAME/
+#echo "rsync -v -rtlz --delete --delete-excluded --include-from=$INCL_FILE -e \"$RSYNC_SSH\" / $RSYNC_USER@$RSYNC_TARGET:$RSYNC_DIR/$CLIENT_NAME/ "
+
+echo "sudo rsync -v -rtlz --include-from=$INCL_FILE -e \"$RSYNC_SSH\" / $RSYNC_USER@$RSYNC_TARGET:$RSYNC_DIR/$CLIENT_NAME/ "
+      sudo rsync -v -rtlz --include-from=$INCL_FILE -e  "$RSYNC_SSH"  / $RSYNC_USER@$RSYNC_TARGET:$RSYNC_DIR/$CLIENT_NAME/
 
 echo "$0: done!"
 
