@@ -104,5 +104,41 @@ rc-status default  # should list: openvpn
 #.
 
 # - - - - - - = = = - - - - - - . 
+# manually setup wlan0
+
+# below is the result after running: setup-interfaces
+
+> apk info | egrep "wpa_supplicant|linux-firmware-brcm"
+linux-firmware-brcm
+wpa_supplicant
+wpa_supplicant-openrc
+
+> cat /etc/network/interfaces
+#= /etc/network/interfaces
+#
+auto lo
+iface lo inet loopback
+iface lo inet6 loopback
+#
+auto eth0
+iface eth0 inet dhcp
+iface eth0 inet6 manual
+#
+auto wlan0
+iface wlan0 inet dhcp
+iface wlan0 inet6 manual
+  wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+        up ip link set $IFACE up
+        down ip link set $IFACE down
+#.
+#-eof
+
+> cat /etc/wpa_supplicant/wpa_supplicant.conf
+network={
+        ssid="my-ssid"
+        psk=d0c99...more..hex
+}
+
+# - - - - - - = = = - - - - - - . 
 #-eof
 
