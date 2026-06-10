@@ -133,11 +133,34 @@ iface wlan0 inet6 manual
 #.
 #-eof
 
+# add 'country' to prevent this error: https://raspberrypi.stackexchange.com/questions/149024/rp5-problems-with-network-connection
+
 > cat /etc/wpa_supplicant/wpa_supplicant.conf
+country=FR
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 network={
         ssid="my-ssid"
         psk=d0c99...more..hex
 }
+
+# bugger ... above did not fix this issue:
+
+> dmesg  | egrep ieee80211
+[   70.496379] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown Frame: category 0x5, action 0x1
+[  100.589094] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown Frame: category 0x5, action 0x1
+[  131.613010] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown Frame: category 0x5, action 0x1
+
+# - - - - - - = = = - - - - - - . 
+# install Docker
+
+# https://wiki.alpinelinux.org/wiki/Docker
+
+apk add docker docker-cli-compose
+rc-update add docker default
+service docker start
+#
+addgroup jdg docker
+
 
 # - - - - - - = = = - - - - - - . 
 #-eof
