@@ -92,10 +92,10 @@ cat <<HERE
 mkdir -pv ~/.log/
 
 # Alpine:
-apk info -v > ~/.log/apk_info_v.$(date +d%y%m%dt%H%M%Sz%Z).log.txt
+apk info -v > ~/.log/apk_info_v.\$(date +d%y%m%dt%H%M%Sz%Z).log.txt
 
 # Debian:
-dpkg -l > ~/.log/dpkg_l.$(date +d%y%m%dt%H%M%Sz%Z).log.txt
+dpkg -l > ~/.log/dpkg_l.\$(date +d%y%m%dt%H%M%Sz%Z).log.txt
 
 # then:
 smartdump-checkin.pl ~/.log/

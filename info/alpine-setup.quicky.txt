@@ -1,5 +1,42 @@
 #= alpine-setup.quicky.txt 
+# - - - - - - = = = - - - - - - . 
+# (newest on top)
+# - - - - - - = = = - - - - - - . 
 
+# d260610 better install method:
+
+#
+https://docs.alpinelinux.org/user-handbook/0.1a/Installing/manual.html#_repositories
+https://docs.alpinelinux.org/user-handbook/0.1a/Installing/setup_alpine.html#_full_setup_alpine
+https://mirrors.alpinelinux.org/
+ftp.nluug.nl ==> https://ftp.nluug.nl/pub/os/Linux/distr/alpine/
+#
+https://wiki.alpinelinux.org/wiki/Alpine_configuration_management_scripts#
+https://wiki.alpinelinux.org/wiki/Alpine_configuration_management_scripts#setup-apkcache
+https://pkgs.alpinelinux.org/packages?name=alpine-conf&branch=edge&repo=&arch=x86_64&maintainer=
+https://pkgs.alpinelinux.org/package/edge/main/x86_64/alpine-conf
+https://gitlab.alpinelinux.org/alpine/alpine-conf
+
+#
+The alpine-conf package containing the Alpine configuration management scripts is part of base installation of Alpine Package Keeper when installing Alpine Linux.
+Most of these scripts can be understood by examining them at (/usr/sbin/).
+Feature descriptions for available Alpine Linux setup scripts (/usr/sbin/setup-*).
+
+# on the freshly booted Alpine box, do this manually instead of setup-alpine (<= sucks):
+
+#setup-hostname  # (do later)
+setup-interfaces
+rc-service networking stop
+rc-service networking start
+setup-ntp         # choose: busybox (and alter later)
+setup-timezone
+setup-apkrepos    # (s) for show-list, then choose [22] ftp.nluug.nl
+setup-user
+setup-sshd
+setup-disk        # choose: 'sys'   (note: this requires working interfaces+routing and APK repo)
+reboot
+
+# - - - - - - = = = - - - - - - . 
 #: d260517-jdg: 
 - use image from rpi-imager: other-os, alpine
 - run: setup-alpine
@@ -13,8 +50,7 @@
 su -  # (sudo is not installed yet)
 vi /etc/apk/repositories  # uncomment line with 'community', e.g. http://mirrors.ircam.fr/pub/alpine/v3.23/community 
 apk update
-apk add bash ca-certificates ca-certificates-bundle curl file git htop i2c-tools jansson jq less linux-rpi lsb-release-minimal lsof mosquitto-clients musl-locales ntpsec openssh openvpn perl raspberrypi-bootloader raspberrypi-bootlo
-ader-common shadow strace sudo vim vim-common zlib zstd-libs  
+apk add bash ca-certificates ca-certificates-bundle curl file git htop i2c-tools jansson jq less linux-rpi lsb-release-minimal lsof mosquitto-clients musl-locales ntpsec openssh openvpn perl raspberrypi-bootloader raspberrypi-bootloader-common rsync shadow strace sudo vim vim-common zlib zstd-libs  
 reboot
 #.
 
@@ -67,5 +103,6 @@ rc-service openvpn start
 rc-status default  # should list: openvpn
 #.
 
+# - - - - - - = = = - - - - - - . 
 #-eof
 
