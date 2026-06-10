@@ -45,7 +45,7 @@ echo "# - - - "
 #echo "sudo rsync -v -rtlz --include-from=$INCL_FILE -e \"$RSYNC_SSH\" / $RSYNC_USER@$RSYNC_TARGET:$RSYNC_DIR/$CLIENT_NAME/ "
 #      sudo rsync -v -rtlz --include-from=$INCL_FILE -e  "$RSYNC_SSH"  / $RSYNC_USER@$RSYNC_TARGET:$RSYNC_DIR/$CLIENT_NAME/
 
-echo "# > ssh -p $RSYNC_PORT $RSYNC_USER@$RSYNC_TARGET \"ls -altr ./smartdump/\"
+echo "# > ssh -p $RSYNC_PORT $RSYNC_USER@$RSYNC_TARGET \"ls -altr ./smartdump/\" "
           ssh -p $RSYNC_PORT $RSYNC_USER@$RSYNC_TARGET "ls -altr ./smartdump/"
 
 echo "# $0: done!"
