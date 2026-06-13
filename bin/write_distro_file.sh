@@ -371,7 +371,7 @@ write_distro()
   # the 'iconv' is needed when jq returns 'null' so to turn it into string 'null':
   # on old distro the --json flag is unavailable:
   #[ "$(which hostnamectl)" ] && [ "$(which jq)" ] && CHAS=$(hostnamectl --json=pretty | jq -r .Chassis | iconv -f utf-8 -t us-ascii//TRANSLIT)
-  [ "$(which hostnamectl)" ] && [ "$(which jq)" ] && CHAS=$(hostnamectl | grep "Chassis" | awk '{print $2}' | iconv -f utf-8 -t us-ascii//TRANSLIT)
+  [ "$(which hostnamectl)" ] && CHAS=$(hostnamectl | grep "Chassis" | awk '{print $2}' | iconv -f utf-8 -t us-ascii//TRANSLIT)
   # outputs: null | laptop | vm
   [ "$CHAS" == "null" ] && CHAS=""
   [ "$CHAS" == "laptop" ] && CHAS="phy"
@@ -406,6 +406,7 @@ write_distro()
   export JINFO_KERNEL="$KER"
 
   if [ "$SILENT" != "silent" ]; then
+    echo "# DISTRO_TYPE=\"$DISTRO\""
     echo "# JINFO_PLATFORM=\"$JINFO_PLATFORM\""
     echo "# JINFO_HARDWARE=\"$JINFO_HARDWARE\""
     echo "# JINFO_ISA=\"$JINFO_ISA\""
