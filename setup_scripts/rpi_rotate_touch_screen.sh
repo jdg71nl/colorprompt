@@ -38,12 +38,15 @@ cat <<HERE
 # "The rotate= setting only rotates the text-mode console. For applications that write directly to DRM, such as cvlc or the libcamera apps, ..."
 # https://en.wikipedia.org/wiki/Direct_Rendering_Manager
 
+# on Debian (v12+ ?):
 # Add the following to the end of the file, replacing <rotation-value> with the number of degrees clockwise to rotate by (0, 90, 180, or 270):
-
 > sudo vi /boot/firmware/cmdline.txt
-> sudo vi /boot/cmdline.txt
-
 video=DSI-1:800x480@60,rotate=180
+
+# on Alpine (v3.24+ ?):
+# create this file (config.txt says to write customizations here):
+> sudo vi /boot/usercfg.txt
+display_lcd_rotate=2
 
 HERE
 #
