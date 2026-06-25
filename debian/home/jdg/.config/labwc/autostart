@@ -11,5 +11,5 @@
 # -- run:
 sleep 2
 unclutter -idle 0.5 &
-firefox --kiosk https://127.0.0.1:8084 &
+firefox --kiosk http://127.0.0.1:8084 &
 #-eof
