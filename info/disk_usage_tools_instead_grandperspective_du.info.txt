@@ -1,0 +1,21 @@
+#= disk_usage_tools_instead_grandperspective_du.info.txt
+
+# - - - - - - = = = - - - - - - .
+# ncdu
+# https://dev.yorhel.nl/ncdu
+
+# on Mac:
+brew install ncdu
+ncdu /Users/jdg
+
+# - - - - - - = = = - - - - - - .
+# dust (Rust-based, faster du-like tool)
+# https://github.com/bootandy/dust
+
+# on Mac:
+brew install dust
+dust -X /Users/jdg
+
+# - - - - - - = = = - - - - - - .
+#-eof
+
