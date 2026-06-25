@@ -1,0 +1,15 @@
+#= /home/jdg/.config/labwc/autostart
+# -- research:
+# > ps -e | grep -E "wayfire|labwc|lxsession|openbox"
+#    1074 ?        00:00:00 labwc
+# below file is for: labwc (d260625 deb13 on rpi5b)
+# -- prep:
+# > sudo apt install firefox unclutter
+# > mkdir -p ~/.config/labwc
+# > touch    ~/.config/labwc/autostart
+# > chmod +x ~/.config/labwc/autostart
+# -- run:
+sleep 2
+unclutter -idle 0.5 &
+firefox --kiosk https://127.0.0.1:8084 &
+#-eof
