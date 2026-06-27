@@ -46,6 +46,7 @@ reboot
 - reboot
 #.
 
+# - - - - - - = = = - - - - - - . 
 #: install packages:
 su -  # (sudo is not installed yet)
 vi /etc/apk/repositories  # uncomment line with 'community', e.g. http://mirrors.ircam.fr/pub/alpine/v3.23/community 
@@ -54,6 +55,7 @@ apk add bash ca-certificates ca-certificates-bundle curl file git htop i2c-tools
 reboot
 #.
 
+# - - - - - - = = = - - - - - - . 
 #: setup colorprompt, bash and sudo
 # (as user: jdg):
 curl https://j71.nl/cpih | bash 
@@ -72,6 +74,7 @@ HERE
 cp -av ~/colorprompt/debian/etc/sudoers.d/jdg-sudoers-nopasswd-chmod440 /etc/sudoers.d/
 #.
 
+# - - - - - - = = = - - - - - - . 
 #: now we change busybox-"ntpd" with ntpsec
 apk info --who-owns /etc/init.d/ntpd  # gives: /etc/init.d/ntpd is owned by busybox-openrc-1.37.0-r30
 rc-service ntpd stop
@@ -81,13 +84,24 @@ rc-service ntpsec start
 rc-status default  # gives list of services
 #.
 
+# - - - - - - = = = - - - - - - . 
 #: setup i2c
-sudo vi /boot/config.txt  # add: dtparam=i2c_arm=on  dtparam=i2c1=on  (optional?) dtparam=i2c_arm_baudrate=10000
+# NO: sudo vi /boot/config.txt  # add: dtparam=i2c_arm=on  dtparam=i2c1=on  (optional?) dtparam=i2c_arm_baudrate=10000
+> cat /boot/usercfg.txt
+#= /boot/usercfg.txt
+
+# add: dtparam=i2c_arm=on  dtparam=i2c1=on  (optional?) dtparam=i2c_arm_baudrate=10000
+dtparam=i2c_arm=on
+dtparam=i2c1=on
+dtparam=i2c_arm_baudrate=10000
+#-eof
+
 sudo vi /etc/modules      # add: i2c-dev  i2c-bcm2708
 # (reboot)
 sudo i2cdetect -y 1  # should give address of some i2c device
 #.
 
+# - - - - - - = = = - - - - - - . 
 #: setup jmoon
 print_cmd__jmgc.sh
 # these don't work (?!?):
