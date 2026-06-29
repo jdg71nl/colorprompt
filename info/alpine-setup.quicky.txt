@@ -176,6 +176,21 @@ service docker start
 addgroup jdg docker
 
 # - - - - - - = = = - - - - - - . 
+# Open-RC
+
+# https://wiki.alpinelinux.org/wiki/OpenRC
+
+rc-service ServiceName start
+rc-service ServiceName stop
+rc-service ServiceName restart
+rc-update add ServiceName runlevel
+rc-update del ServiceName runlevel
+rc-service ServiceName status
+rc-update show runlevel
+rc-status
+rc-status -l
+
+# - - - - - - = = = - - - - - - . 
 # add swap:
 
 apk add zram-init
