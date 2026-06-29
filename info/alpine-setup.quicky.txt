@@ -175,6 +175,20 @@ service docker start
 #
 addgroup jdg docker
 
+# - - - - - - = = = - - - - - - . 
+# add swap:
+
+apk add zram-init
+vi /etc/conf.d/zram-init
+# add/replace:
+num_devices=1
+type0=swap
+flag0=
+size0=512
+zram_size_mb=512
+#.
+rc-update add zram-init boot
+rc-service zram-init start
 
 # - - - - - - = = = - - - - - - . 
 #-eof
