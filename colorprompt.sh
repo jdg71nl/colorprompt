@@ -95,6 +95,7 @@ psg () { echo "# (bash-func) ps aux | egrep \"^USER|$1\" "; ps aux | egrep "^USE
 ff ()   { echo "# bash-function, see 'type ff':";  /usr/bin/find . -iname '*'$1'*'; }
 ff2 ()  { echo "# bash-function, see 'type ff2':"; /usr/bin/find . ! -ipath '*.svn*' -iname '*'$1'*'; }
 fif ()  { echo "# bash-function, see 'type fif':"; /usr/bin/find . -xtype f -iname '*'$2'*' -print0 | xargs -0i grep -sinH "$1" "{}"; }
+fifa ()  { echo "# bash-function, see 'type fif':"; /usr/bin/find . -type f -iname '*'$2'*' -print0 | xargs -0i grep -sinH "$1" "{}"; }
 fif2 () { echo "# bash-function, see 'type fif2':"; /usr/bin/find . -xtype f ! -ipath '*.svn*' -iname '*'$2'*' -print0 | xargs -0i grep -sinH "$1" "{}"; }
 fifp ()  { echo "# bash-function, see 'type fifp':"; /usr/bin/find . -path '*/node_modules/*' -prune -o -xtype f -iname '*'$2'*' -print0 | xargs -0i grep -sinH "$1" "{}"; }
 ffm ()   { echo "# bash-function, see 'type ffm':"; gfind . -iname '*'$1'*'; }

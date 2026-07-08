@@ -206,5 +206,28 @@ rc-update add zram-init boot
 rc-service zram-init start
 
 # - - - - - - = = = - - - - - - . 
+# openvpn with multiple instances
+
+# the openvpn.conf file MUST be in dir: /etc/openvpn
+# it CAN be a symlink to a subfolder
+# the .conf file MUST have full-path (no relative files)
+
+# adjust in all openvpn.conf:
+- provide full path for all files: ca, cert, key, tls-auth
+- comment out: cd, management, status, log
+
+# inspri from: https://ported.pw/2022/06/04/Persistent-OpenVPN-Client-on-Alpine-Linux.html
+> vi /etc/openvpn/your_client_name.conf
+> ln -s /etc/init.d/openvpn /etc/init.d/openvpn.your_client_name
+> rc-service openvpn.your_client_name start
+> rc-update add openvpn.your_client_name
+
+# my case:
+> ln -s /etc/openvpn/jmoon-gwclient/jmoon-gwclient.conf /etc/openvpn/jmoon-gwclient.conf
+> ln -s /etc/init.d/openvpn /etc/init.d/openvpn.jmoon-gwclient
+> rc-service openvpn.jmoon-gwclient start
+> rc-update add openvpn.jmoon-gwclient
+
+# - - - - - - = = = - - - - - - . 
 #-eof
 
