@@ -21,6 +21,11 @@ rc-update show runlevel
 rc-status
 rc-status -l
 
+# 
+apk search cmd:lsb_release      # who provides it
+apk add    cmd:lsb_release      # install whatever provides it
+apk info --who-owns /usr/bin/lsb_release 
+
 EOF
 
 #-eof

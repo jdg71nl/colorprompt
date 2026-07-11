@@ -48,6 +48,11 @@ SCRIPT_PATH=$(dirname $SCRIPT)
 # cd $SCRIPT_PATH
 # pwd
 
+# more concise:
+BASENAME=$(basename $0)
+SCRIPT=$(realpath $0)
+SCRIPT_PATH=$(dirname $SCRIPT)
+
 # DATE_TAG=$(date +d%y%m%dt%H%M%S)
 # echo "# > DATE_TAG=\$(date +d%y%m%dt%H%M%S)"
 

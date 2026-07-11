@@ -115,6 +115,7 @@ tarbase64 () { COPYFILE_DISABLE=1 tar czf - "$@" | openssl base64 ; }
 untarbase64 () { cat | openssl base64 -d | tar xvzf - ; }
 #
 multiline2line () { cat | perl -pe "s/\s+/ /" ; }
+multiline2line_skip_comments () { cat | egrep -v "^#" | perl -pe "s/\s+/ /" ; }
 #
 openssl_show_crt () { /usr/bin/openssl x509 -text -noout -in "$@" ; }
 #.
