@@ -118,6 +118,8 @@ multiline2line () { cat | perl -pe "s/\s+/ /" ; }
 multiline2line_skip_comments () { cat | egrep -v "^#" | perl -pe "s/\s+/ /" ; }
 #
 openssl_show_crt () { /usr/bin/openssl x509 -text -noout -in "$@" ; }
+# d260716 inspri Claude:
+pathgrep() { compgen -c | grep -i -- "$1" | sort -u; }
 #.
 
 # - - -: DISTRO info
