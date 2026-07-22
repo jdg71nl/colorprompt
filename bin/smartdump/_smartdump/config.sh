@@ -3,7 +3,8 @@
 #
 RSYNC_PORT=""
 RSYNC_SSH="ssh -p $RSYNC_PORT"
-RSYNC_TARGET="jbase2.j71.nl"
+#RSYNC_TARGET="jbase2.j71.nl"
+RSYNC_TARGET="jstore.j71.nl"
 #
 RSYNC_USER=""
 #
