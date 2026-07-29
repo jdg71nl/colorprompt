@@ -111,7 +111,9 @@ fifm2 ()  { echo "# bash-function, see 'type fifm':"; ffind . -xtype f -iname '*
 fifm3 () { egrep -sinH "$1" "$2"; }
 fnm () { echo "# (bash-func) find . | grep -v 'node_modules' "; find . | grep -v 'node_modules' ; }
 #
-tarbase64 () { COPYFILE_DISABLE=1 tar czf - "$@" | openssl base64 ; }
+#tarbase64 () { COPYFILE_DISABLE=1 tar czf - "$@" | openssl base64 ; }
+# d260726 prevent xtended attribs on Mac https://claude.ai/chat/85fbdeb2-9e80-4678-bcf2-4999458d4019
+tarbase64 () { COPYFILE_DISABLE=1 tar --no-acls --no-fflags --no-xattrs --no-mac-metadata -czf - "$@" | openssl base64 ; }
 untarbase64 () { cat | openssl base64 -d | tar xvzf - ; }
 #
 multiline2line () { cat | perl -pe "s/\s+/ /" ; }
