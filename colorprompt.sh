@@ -122,6 +122,10 @@ multiline2line_skip_comments () { cat | egrep -v "^#" | perl -pe "s/\s+/ /" ; }
 openssl_show_crt () { /usr/bin/openssl x509 -text -noout -in "$@" ; }
 # d260716 inspri Claude:
 pathgrep() { compgen -c | grep -i -- "$1" | sort -u; }
+#
+withenv() { local f="$1"; shift; ( set -a; . "$f"; exec "$@" ); }
+# d260807 inspri Claude, usage ==> withenv apps/api/.env nx run api:migrate
+# alt on prompt                ==> set -a && source ./apps/api/.env && command     # set -a = auto-export everything sourced
 #.
 
 # - - -: DISTRO info
