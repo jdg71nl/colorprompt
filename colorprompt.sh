@@ -126,6 +126,8 @@ pathgrep() { compgen -c | grep -i -- "$1" | sort -u; }
 withenv() { local f="$1"; shift; ( set -a; . "$f"; exec "$@" ); }
 # d260807 inspri Claude, usage ==> withenv apps/api/.env nx run api:migrate
 # alt on prompt                ==> set -a && source ./apps/api/.env && command     # set -a = auto-export everything sourced
+#
+ssh() { echo "# Note: use 'jrs' for SSH with file-logging. use full-path '/usr/bin/ssh' for the real ssh command."; }
 #.
 
 # - - -: DISTRO info
