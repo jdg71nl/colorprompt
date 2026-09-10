@@ -21,7 +21,37 @@
 FILE="$1"
 [ ! -f "$FILE" ] && echo "# Error: file '$FILE' not found." && exit 1
 
-exiftool '-DateTimeOriginal>FileModifyDate' $FILE
+#
+DIR_NAME=$( echo "$FILE" | /usr/bin/perl -pe "s/^(.*)\/([^\/]+)$/\1/g" )
+FILE_NAME=$( echo "$FILE" | /usr/bin/perl -pe "s/^(.*)\/([^\/]+)$/\2/g" )
+BASE_NAME=$( echo "$FILE_NAME" | /usr/bin/perl -pe "s/^(.*)\.([^\.]+)$/\1/g" )
+EXTENSION=$( echo "$FILE_NAME" | /usr/bin/perl -pe "s/^(.*)\.([^\.]+)$/\2/g" )
+#
+# FILE_exploded="[$DIR_NAME] / [$BASE_NAME] . [$EXTENSION]"
+
+set -euo pipefail
+
+#
+exiftool '-DateTimeOriginal>FileModifyDate' "$FILE"
+
+# d260910 https://claude.ai/chat/2892b213-c3ae-4e6f-acd8-70e23542159b Q: "how to negate a [[ ]] test"
+# A:
+# # Put ! inside the brackets (most idiomatic):
+# [[ ! $FILE_NAME =~ ^d[0-9]+ ]] && echo "# error" && exit 1
+# # Or negate the whole command with ! in front:
+# ! [[ $FILE_NAME =~ ^d[0-9]+ ]] && echo "# error" && exit 1
+
+[[ $FILE_NAME =~ ^d[0-9]+ ]] && exit 0
+
+#
+MOD_TIME=$(date -r "$FILE" +d%y%m%dt%H%M%Sz%Z)
+NEW_NAME="$MOD_TIME-$FILE_NAME"
+
+#
+[ -f "$NEW_NAME" ] && exit 0
+
+#
+mv "$FILE" "$NEW_NAME"
 
 #-eof
 
