@@ -57,6 +57,14 @@ SCRIPT_PATH=$(dirname $SCRIPT)
 # echo "# > DATE_TAG=\$(date +d%y%m%dt%H%M%S)"
 
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
+#
+DIR_NAME=$(  echo "$FILE" | /usr/bin/perl -pe "s/^(.*)\/([^\/]+)$/\1/g" )
+[ "$DIR_NAME" == "$FILE" ] && DIR_NAME="."
+FILE_NAME=$( echo "$FILE" | /usr/bin/perl -pe "s/^(.*)\/([^\/]+)$/\2/g" )
+BASE_NAME=$( echo "$FILE_NAME" | /usr/bin/perl -pe "s/^(.*)\.([^\.]+)$/\1/g" )
+EXTENSION=$( echo "$FILE_NAME" | /usr/bin/perl -pe "s/^(.*)\.([^\.]+)$/\2/g" )
+
+# - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
 # Note: on redir stdout/stderr:
 
 # howto redir stdout to stderr (note: the '1>&2' part needs to be at the END)
