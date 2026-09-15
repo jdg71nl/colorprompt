@@ -1,4 +1,5 @@
 #!/bin/bash
+#= colorprompt/bin/write_distro_file.sh
 # display every line executed in this bash script:
 
 SILENT=$1
