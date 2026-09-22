@@ -35,6 +35,8 @@ reboot
 su -  # (sudo is not installed yet)
 # official Alpine Linux global CDN (automatically routes traffic to the closest high-performance edge servers): https://dl-cdn.alpinelinux.org/alpine/
 vi /etc/apk/repositories  # uncomment line with 'community', e.g. http://mirrors.ircam.fr/pub/alpine/v3.23/community 
+https://dl-cdn.alpinelinux.org/alpine/latest-stable/main/
+https://dl-cdn.alpinelinux.org/alpine/latest-stable/community/
 apk update
 apk add bash ca-certificates ca-certificates-bundle curl file git htop i2c-tools jansson jq less linux-rpi lsb-release-minimal lsof mosquitto-clients musl-locales ntpsec openssh openvpn perl raspberrypi-bootloader raspberrypi-bootloader-common rsync shadow strace sudo vim vim-common zlib zstd-libs  
 reboot
