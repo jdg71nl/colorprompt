@@ -43,9 +43,13 @@ KENTEKEN=$UPPER
 
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
 
-echo "# curl --silent https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=${KENTEKEN} | jq "
+echo "# > curl --silent https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=${KENTEKEN} | jq "
 
 curl --silent https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=${KENTEKEN} | jq
+
+echo "# > curl --silent https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=${KENTEKEN} | jq '{ tenaamstellen_mogelijk: .[0].tenaamstellen_mogelijk }' "
+
+curl --silent https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=${KENTEKEN} | jq '{ tenaamstellen_mogelijk: .[0].tenaamstellen_mogelijk }'
 
 # - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
 #-eof
