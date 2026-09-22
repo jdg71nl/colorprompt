@@ -1,0 +1,221 @@
+#!/bin/bash
+#= printhint_alpine_setup.sh 
+
+cat <<EOF
+
+# - - - - - - = = = - - - - - - . 
+# default recommended way:
+# on the freshly booted Alpine box, do this manually instead of
+setup-alpine (<= sucks)
+# instead:
+#setup-hostname  # (do later)
+setup-interfaces
+rc-service networking stop
+rc-service networking start
+setup-ntp         # choose: busybox (and alter later)
+setup-timezone
+setup-apkrepos    # (s) for show-list, then choose [22] ftp.nluug.nl
+setup-user
+setup-sshd
+setup-disk        # choose: 'sys'   (note: this requires working interfaces+routing and APK repo)
+reboot
+
+# - - - - - - = = = - - - - - - . 
+#: d260517 jdg: minimal way:
+- use image from rpi-imager: other-os, alpine
+- run: setup-alpine
+-- net choose: eth0 (also wlan0?, not wlan0 alone)
+-- time: busybox (change later)
+-- disk: choose mmcblk0, install 'sys'
+- reboot
+#.
+
+# - - - - - - = = = - - - - - - . 
+#: install packages:
+su -  # (sudo is not installed yet)
+# official Alpine Linux global CDN (automatically routes traffic to the closest high-performance edge servers): https://dl-cdn.alpinelinux.org/alpine/
+vi /etc/apk/repositories  # uncomment line with 'community', e.g. http://mirrors.ircam.fr/pub/alpine/v3.23/community 
+apk update
+apk add bash ca-certificates ca-certificates-bundle curl file git htop i2c-tools jansson jq less linux-rpi lsb-release-minimal lsof mosquitto-clients musl-locales ntpsec openssh openvpn perl raspberrypi-bootloader raspberrypi-bootloader-common rsync shadow strace sudo vim vim-common zlib zstd-libs  
+reboot
+#.
+
+# - - - - - - = = = - - - - - - . 
+#: setup colorprompt, bash and sudo
+# (as user: jdg):
+curl https://j71.nl/cpih | bash 
+su -
+curl https://j71.nl/cpih | bash
+vi /etc/passwd  # change /bin/sh to /bin/bash for users: root and jdg
+# (do for both users: root, jdg):
+cat <<HERE > .bash_profile
+#
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+#-eof
+HERE
+# (re-login) (do as user: root)
+cp -av ~/colorprompt/debian/etc/sudoers.d/jdg-sudoers-nopasswd-chmod440 /etc/sudoers.d/
+#.
+
+# - - - - - - = = = - - - - - - . 
+#: now we change busybox-"ntpd" with ntpsec
+apk info --who-owns /etc/init.d/ntpd  # gives: /etc/init.d/ntpd is owned by busybox-openrc-1.37.0-r30
+rc-service ntpd stop
+rc-update del ntpd default
+rc-update add ntpsec default
+rc-service ntpsec start
+rc-status default  # gives list of services
+#.
+
+# - - - - - - = = = - - - - - - . 
+#: setup i2c
+# NO: sudo vi /boot/config.txt  # add: dtparam=i2c_arm=on  dtparam=i2c1=on  (optional?) dtparam=i2c_arm_baudrate=10000
+> cat /boot/usercfg.txt
+#= /boot/usercfg.txt
+
+# add: dtparam=i2c_arm=on  dtparam=i2c1=on  (optional?) dtparam=i2c_arm_baudrate=10000
+dtparam=i2c_arm=on
+dtparam=i2c1=on
+dtparam=i2c_arm_baudrate=10000
+#-eof
+
+sudo vi /etc/modules      # add: i2c-dev  i2c-bcm2708
+# (reboot)
+sudo i2cdetect -y 1  # should give address of some i2c device
+#.
+
+# - - - - - - = = = - - - - - - . 
+#: setup jmoon
+print_cmd__jmgc.sh
+# these don't work (?!?):
+#rc-update add jopenvpn-jmoon-gwclient default
+#rc-service jopenvpn-jmoon-gwclient start
+# instead:
+su -
+cd /etc/openvpn/
+ln -s jmoon-gwclient/* .
+ln -s jmoon-gwclient.conf openvpn.conf
+rc-update add openvpn default
+rc-service openvpn start
+rc-status default  # should list: openvpn
+#.
+
+# - - - - - - = = = - - - - - - . 
+# manually setup wlan0
+
+# below is the result after running: setup-interfaces
+
+> apk info | egrep "wpa_supplicant|linux-firmware-brcm"
+linux-firmware-brcm
+wpa_supplicant
+wpa_supplicant-openrc
+> apk add linux-firmware-brcm wpa_supplicant wpa_supplicant-openrc
+
+> cat /etc/network/interfaces
+#= /etc/network/interfaces
+#
+auto lo
+iface lo inet loopback
+iface lo inet6 loopback
+#
+auto eth0
+iface eth0 inet dhcp
+iface eth0 inet6 manual
+#
+auto wlan0
+iface wlan0 inet dhcp
+iface wlan0 inet6 manual
+  wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+        up ip link set $IFACE up
+        down ip link set $IFACE down
+#.
+#-eof
+
+# add 'country' to prevent this error: https://raspberrypi.stackexchange.com/questions/149024/rp5-problems-with-network-connection
+
+> cat /etc/wpa_supplicant/wpa_supplicant.conf
+country=FR
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+network={
+        ssid="my-ssid"
+        psk=d0c99...more..hex
+}
+
+# bugger ... above did not fix this issue:
+
+> dmesg  | egrep ieee80211
+[   70.496379] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown Frame: category 0x5, action 0x1
+[  100.589094] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown Frame: category 0x5, action 0x1
+[  131.613010] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown Frame: category 0x5, action 0x1
+
+# - - - - - - = = = - - - - - - . 
+# install Docker
+
+# https://wiki.alpinelinux.org/wiki/Docker
+
+apk add docker docker-cli-compose
+rc-update add docker default
+service docker start
+#
+addgroup jdg docker
+
+# - - - - - - = = = - - - - - - . 
+# Open-RC
+
+# https://wiki.alpinelinux.org/wiki/OpenRC
+
+rc-service ServiceName start
+rc-service ServiceName stop
+rc-service ServiceName restart
+rc-update add ServiceName runlevel
+rc-update del ServiceName runlevel
+rc-service ServiceName status
+rc-update show runlevel
+rc-status
+rc-status -l
+
+# - - - - - - = = = - - - - - - . 
+# add swap:
+
+apk add zram-init
+vi /etc/conf.d/zram-init
+# add/replace:
+num_devices=1
+type0=swap
+flag0=
+size0=512
+zram_size_mb=512
+#.
+rc-update add zram-init boot
+rc-service zram-init start
+
+# - - - - - - = = = - - - - - - . 
+# openvpn with multiple instances
+
+# the openvpn.conf file MUST be in dir: /etc/openvpn
+# it CAN be a symlink to a subfolder
+# the .conf file MUST have full-path (no relative files)
+
+# adjust in all openvpn.conf:
+- provide full path for all files: ca, cert, key, tls-auth
+- comment out: cd, management, status, log
+
+# inspri from: https://ported.pw/2022/06/04/Persistent-OpenVPN-Client-on-Alpine-Linux.html
+> vi /etc/openvpn/your_client_name.conf
+> ln -s /etc/init.d/openvpn /etc/init.d/openvpn.your_client_name
+> rc-service openvpn.your_client_name start
+> rc-update add openvpn.your_client_name
+
+# my case:
+> ln -s /etc/openvpn/jmoon-gwclient/jmoon-gwclient.conf /etc/openvpn/jmoon-gwclient.conf
+> ln -s /etc/init.d/openvpn /etc/init.d/openvpn.jmoon-gwclient
+> rc-service openvpn.jmoon-gwclient start
+> rc-update add openvpn.jmoon-gwclient
+
+# - - - - - - = = = - - - - - - . 
+
+EOF
+
+#-eof
