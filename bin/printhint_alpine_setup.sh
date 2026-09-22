@@ -152,6 +152,17 @@ network={
 [  100.589094] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown Frame: category 0x5, action 0x1
 [  131.613010] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown Frame: category 0x5, action 0x1
 
+rc-update add wpa_supplicant default
+rc-update add networking default
+rc-service wpa_supplicant start
+rc-service networking start
+
+# d260922 this worked somehow, where wlan0 did not get DHCP on rpi3b
+sudo -i
+cd /boot
+touch usercfg.txt
+echo enable_uart=1 >> usercfg.txt
+
 # - - - - - - = = = - - - - - - . 
 # install Docker
 
