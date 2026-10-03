@@ -75,6 +75,12 @@ cat <<EOF
   }
 }
 
+> cat ../project/d260922t211558-curl--paper-api.alpaca.markets_v2_assets.json | jq -c '.[]' | grep -i spotify | jq
+# converts: [{a},{b},{c}]
+# to:
+{a}
+{b}
+{c}
 
 EOF
 
