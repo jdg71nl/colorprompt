@@ -154,6 +154,18 @@ nothingnessssssssxssssssssssssss=""
 [   -f $HOME/colorprompt/bin/git-prompt.sh ] && export PS1="${CYAN}--[CWD=${RED}\w${YELLOW}"'$(__git_ps1 "(git:%s)")'"${CYAN}]--[\D{%s} \t \D{%a %d-%b-%Y %Z}]--[${RED}\u${CYAN}@\h]--[${YELLOW}$DISTRO_TYPE${CYAN}]------${NOCOLOR}\n> "
 [ ! -f $HOME/colorprompt/bin/git-prompt.sh ] && export PS1="${CYAN}--[CWD=${RED}\w${CYAN}]${$nothingnessssssssxssssssssssssss}--[\D{%s} \t \D{%a %d-%b-%Y %Z}]--[${RED}\u${CYAN}@\h]--[${YELLOW}$DISTRO_TYPE${CYAN}]------${NOCOLOR}\n> "
 #
+#: d261004 from Claude: https://claude.ai/code/session_015vxMJTGSPTyDDHKG7QmfGV
+alias print_gitroot='git rev-parse --show-toplevel'
+alias cd_gitroot='cd "$(git rev-parse --show-toplevel)"'
+#
+__git_repo_base_update() {
+  [[ "$PWD" == "$__git_repo_base_lastpwd" ]] && return
+  __git_repo_base_lastpwd=$PWD
+  _git_repo_base_dir=$(git rev-parse --show-toplevel 2>/dev/null)   # empty outside a repo
+}
+PROMPT_COMMAND="__git_repo_base_update${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+#.
+#
 #: d260725 solve strange prompt pre-pend tp prompt:
 # "08;end=b1ead99a-01fd-43e3-bbc5-671c49380b0a;exit=success08;start=1a17f32b-c0bb-4c68-ab2a-3493a8462b3b;machineid=767a8186ae3a4e15a41ddaea4f5bdbb3;user=jdg;hostname=j-rpi5-workstation;bootid=8378281e-4a9e-4e02-9466-8d86824f751b;pid=00000000000000003041;type=shell;cwd=/home/jdg/colorprompt"
 # Claude says: https://claude.ai/chat/62499e9a-54ab-4fd2-a34c-e77b8b8faa8e
