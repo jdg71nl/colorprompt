@@ -55,7 +55,7 @@ host           smtp.gmail.com
 port           587
 from           john@de-graaff.net
 user           john@de-graaff.net
-password       abcdefghijklmnop
+password       some
 #
 # Note: get the "App Password" from the Google Account website
 #
@@ -66,7 +66,10 @@ sudo chmod 644 /etc/msmtprc
 sudo touch /var/log/msmtp.log
 sudo chmod 666 /var/log/msmtp.log
 
+# Note: check if Debian is actually using msmtp as system-wide Mail Transport Agent (MTA) v
+> ls -l /usr/sbin/sendmail
+lrwxrwxrwx 1 root root 12 Feb  5  2023 /usr/sbin/sendmail -> ../bin/msmtp
+
 EOF
 
 #-eof
-
