@@ -6,7 +6,9 @@
 # curl_auto_rdw_check.sh
 # Hourly check of the RDW open-data record for one license plate.
 # Logs and e-mails a per-key diff whenever anything in the record changes.
-#
+
+[ "$(id -u)" -eq 0 ] || { echo "Run as root." >&2; exit 1; }
+
 set -uo pipefail
 
 APP_NAME="curl_auto_rdw_check"
@@ -64,6 +66,7 @@ jq . "$TMP_FILE" > "$NEW_FILE" || die "jq formatting failed"
 #   ~ key: old -> new    changed
 #   + key: value         added
 #   - key: value         removed (e.g. all keys when the record disappears)
+#
 json_diff() {
     jq -rn --slurpfile p "$1" --slurpfile n "$2" '
         ($p[0][0] // {}) as $a
@@ -122,4 +125,19 @@ fi
 cp "$NEW_FILE" "$PREV_FILE"
 
 #-eof
+
+TEST_EMAIL=$(<<'HERE'
+
+--
+license: 53RDBL
+prev: 2026-10-10T11:58:23+02:00
+new: 2026-10-10T12:17:01+02:00
+diff:
+~ merk: test_merk -> PEUGEOT
+--
+
+HERE
+)
+
+
 
