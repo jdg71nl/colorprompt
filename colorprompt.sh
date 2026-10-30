@@ -128,6 +128,8 @@ withenv() { local f="$1"; shift; ( set -a; . "$f"; exec "$@" ); }
 # alt on prompt                ==> set -a && source ./apps/api/.env && command     # set -a = auto-export everything sourced
 #
 ssh() { echo "# Note: use 'jrs' for SSH with file-logging. use full-path '/usr/bin/ssh' for the real ssh command."; }
+#
+gaa () { echo "# (bash-func) git add -A"; git add -A ; }
 #.
 
 # - - -: DISTRO info
