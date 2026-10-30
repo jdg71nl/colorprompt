@@ -11,8 +11,12 @@
 # install on Linux:
 # > apt install stress-ng
 
-# all cores, 60% load, FPU-heavy
-echo "# > stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 60 "
-stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 60
+# # [1] all cores, 60% load, FPU-heavy
+# echo "# > stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 60 "
+# stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 60
+
+# [2]
+echo "# > stress-ng --cpu \"\$(nproc)\" --cpu-method matrixprod --cpu-load 60 --timeout 0   # -- nproc=$(nproc)"
+stress-ng --cpu "$(nproc)" --cpu-method matrixprod --cpu-load 60 --timeout 0
 
 #-eof
