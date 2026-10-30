@@ -15,8 +15,11 @@
 # echo "# > stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 60 "
 # stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 60
 
+# LOAD="60"
+LOAD="80"
+
 # [2]
-echo "# > stress-ng --cpu \"\$(nproc)\" --cpu-method matrixprod --cpu-load 60 --timeout 0   # -- nproc=$(nproc)"
-stress-ng --cpu "$(nproc)" --cpu-method matrixprod --cpu-load 60 --timeout 0
+echo "# > stress-ng --cpu \"\$(nproc)\" --cpu-method matrixprod --cpu-load $LOAD --timeout 0   # -- nproc=$(nproc)"
+stress-ng --cpu "$(nproc)" --cpu-method matrixprod --cpu-load $LOAD --timeout 0
 
 #-eof
