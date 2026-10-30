@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-#= colorprompt/bin/heater.sh
+#= colorprompt/bin/heater-yes.sh
 
 # d261030 JDG https://claude.ai/chat/b78aec0e-1ffe-4879-b9b3-a401b9ffb701
 
-# heater.sh — adjustable CPU load generator (macOS + Linux)
+# heater-yes.sh — adjustable CPU load generator (macOS + Linux)
 #
-# Usage:   ./heater.sh [percent] [cores]
+# Usage:   ./heater-yes.sh [percent] [cores]
 #   percent  load per core, 0-100   (default: 30)
 #   cores    number of cores to use (default: all)
 #
