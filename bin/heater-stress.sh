@@ -12,6 +12,7 @@
 # > apt install stress-ng
 
 # all cores, 60% load, FPU-heavy
+echo "# > stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 60 "
 stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 60
 
 #-eof
