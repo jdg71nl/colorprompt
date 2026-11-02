@@ -1,0 +1,5 @@
+# curl_auto_rdw_check - hourly RDW status check
+#= /etc/cron.d/curl_auto_rdw_check
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+17 * * * * root /opt/curl_auto_rdw_check/bin/curl_auto_rdw_check.sh >/dev/null 2>>/opt/curl_auto_rdw_check/var/cron.err
