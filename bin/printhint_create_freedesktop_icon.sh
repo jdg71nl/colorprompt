@@ -24,7 +24,7 @@ The menu entry in ~/.local/share/applications/ is the portable part. It shows up
 
 #
 
-cat > open-my-url.desktop <<'EOF'
+cat > open-my-url.desktop <<'EOFILE'
 #= open-my-url.desktop
 #= ~/.local/share/applications/open-my-url.desktop
 [Desktop Entry]
@@ -37,9 +37,12 @@ Exec=/usr/lib/firefox/firefox https://my-url.com/
 Icon=firefox
 Terminal=false
 Categories=Network;
-EOF
+#Categories=Network;WebBrowser;
+EOFILE
 
 chmod +x open-my-url.desktop
+
+desktop-file-validate open-my-url.desktop
 
 mkdir -p ~/.local/share/applications
 cp -av open-my-url.desktop ~/.local/share/applications/
