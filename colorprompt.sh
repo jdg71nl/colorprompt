@@ -130,6 +130,21 @@ withenv() { local f="$1"; shift; ( set -a; . "$f"; exec "$@" ); }
 ssh() { echo "# Note: use 'jrs' for SSH with file-logging. use full-path '/usr/bin/ssh' for the real ssh command."; }
 #
 gaa () { echo "# (bash-func) git add -A"; git add -A ; }
+#
+# d261108 jdg https://claude.ai/chat/b4ab9163-591c-4c22-8a5a-06e2a121403a
+gss() {
+  local dir="$PWD"
+  while :; do
+    if [[ -f "$dir/gss.sh" ]]; then
+      bash "$dir/gss.sh" "$@"
+      return
+    fi
+    [[ "$dir" == "/" ]] && break
+    dir="$(dirname "$dir")"
+  done
+  echo "gss: no gss.sh found in $PWD or any parent" >&2
+  return 1
+}
 #.
 
 # - - -: DISTRO info

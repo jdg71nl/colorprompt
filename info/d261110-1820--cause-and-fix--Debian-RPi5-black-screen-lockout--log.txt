@@ -1,0 +1,133 @@
+# d261110-1820--cause-and-fix--Debian-RPi5-black-screen-lockout--log.txt
+# - - - - - - = = = - - - - - - . 
+
+# d261110 https://claude.ai/chat/a83e6504-278e-4748-a87b-2645f6649c35 "Debian RPi5 black screen lockout"
+
+# these commands chain got the display back:
+
+> sudo chvt 2; sleep 3; sudo chvt 7
+
+# - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
+# check man:
+
+> man chvt | cat
+CHVT(1)                                                                        General Commands Manual                                                                                  CHVT(1)
+
+NAME
+       chvt - change foreground virtual terminal
+
+SYNOPSIS
+       chvt [option...]  [N]
+
+DESCRIPTION
+       The command chvt N makes /dev/ttyN the foreground terminal.  (The corresponding screen 
+       is created if it did not exist yet.  To get rid of unused VTs, use deallocvt(1).)  
+       The key combination (Ctrl-)Left‐Alt-FN (with N in the range 1-12) usually has a similar effect.
+
+OPTIONS
+       -C, --console=DEV
+              the console device to be used.
+
+       -V, --version
+              print version number.
+
+       -h, --help
+              print this usage message.
+
+AUTHORS
+       Andries Brouwer <aeb@cwi.nl>
+
+SEE ALSO
+       deallocvt(1), openvt(1)
+
+kbd                                                                             24 October 2024          
+
+# - - - - - - = = = - - - - - - . 
+
+cat > reset-debian-gui-black-screen-lockout.sh <<'EOF'
+#!/bin/bash
+# d261110 https://claude.ai/chat/a83e6504-278e-4748-a87b-2645f6649c35 "Debian RPi5 black screen lockout"
+chvt 2; sleep 3; chvt 7
+EOF
+
+chmod +x reset-debian-gui-black-screen-lockout.sh
+
+cat > /usr/local/bin/labwc-watchdog.sh <<'EOF'
+#!/bin/bash
+#= labwc-watchdog.sh
+#= /usr/local/bin/labwc-watchdog.sh
+# d261110 https://claude.ai/chat/a83e6504-278e-4748-a87b-2645f6649c35 "Debian RPi5 black screen lockout"
+# Recover labwc from a stuck page flip (black screen) via a VT round-trip
+export XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-0
+pgrep -u jdg -x labwc >/dev/null || exit 0
+[ "$(cat /sys/class/tty/tty0/active)" = tty7 ] || exit 0
+if ! runuser -u jdg -- env XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR WAYLAND_DISPLAY=$WAYLAND_DISPLAY \
+     timeout 10 grim - >/dev/null 2>&1; then
+  logger -t labwc-watchdog "render stall detected, doing VT round-trip"
+  chvt 2; sleep 3; chvt 7
+fi
+EOF
+
+sudo chmod +x /usr/local/bin/labwc-watchdog.sh
+
+cat > /etc/systemd/system/labwc-watchdog.service <<'EOF'
+#= /etc/systemd/system/labwc-watchdog.service
+[Unit]
+Description=labwc render-stall watchdog
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/labwc-watchdog.sh
+EOF
+
+cat > /etc/systemd/system/labwc-watchdog.timer <<'EOF'
+#= /etc/systemd/system/labwc-watchdog.timer
+[Unit]
+Description=Run labwc watchdog every 5 min
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5min
+[Install]
+WantedBy=timers.target
+EOF
+
+sudo chmod +x /usr/local/bin/labwc-watchdog.sh
+sudo systemctl daemon-reload && sudo systemctl enable --now labwc-watchdog.timer
+
+# - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
+
+# current config/status:
+
+--[CWD=~]--[1794331400 18:23:20 Tue 10-Nov-2026 CET]--[jdg@debpi-j33rtr]--[hw:RPI5b-1.0/4G,os:Debian-13/trixie,isa:aarch64]------
+> cat ~/.config/kanshi/config
+profile {
+                output HDMI-A-1 enable scale 1.000000 mode 1920x1080@74.973 position 0,0 transform normal
+}
+
+--[CWD=~]--[1794331408 18:23:28 Tue 10-Nov-2026 CET]--[jdg@debpi-j33rtr]--[hw:RPI5b-1.0/4G,os:Debian-13/trixie,isa:aarch64]------
+> wlr-randr | grep -E 'current|preferred'
+    1920x1080 px, 60.000000 Hz (preferred)
+    1920x1080 px, 74.973000 Hz (current)
+
+# - - - - - - = = = - - - - - - . 
+# update:
+
+sed -i 's/1920x1080@74\.973/1920x1080@60.000/' ~/.config/kanshi/config
+cat ~/.config/kanshi/config
+
+# - - - - - - = = = - - - - - - . 
+# check:
+
+> cat ~/.config/kanshi/config
+profile {
+                output HDMI-A-1 enable scale 1.000000 mode 1920x1080@60.000 position 0,0 transform normal
+}
+
+# - - - - - - = = = - - - - - - . 
+# reload:
+
+export XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-0
+kanshictl reload 2>/dev/null || pkill -HUP -u jdg kanshi
+    
+# - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . - - - - - - = = = - - - - - - . 
+# - - - - - - = = = - - - - - - . 
+#-eof
