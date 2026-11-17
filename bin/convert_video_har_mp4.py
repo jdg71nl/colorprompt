@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+#= bin/convert_video_har_mp4.py
+
+# d2608 jdg https://gemini.google.com/app/294b1347f251e2a8#bb1438e42085f592
 
 import json, base64
 

@@ -142,8 +142,10 @@ gss() {
     [[ "$dir" == "/" ]] && break
     dir="$(dirname "$dir")"
   done
-  echo "gss: no gss.sh found in $PWD or any parent" >&2
-  return 1
+  echo "# gss: no gss.sh found in $PWD or any parent" >&2
+  echo "# let's do a normal: > git status -s "
+  git status -s
+  # return 1
 }
 #.
 
